@@ -11,13 +11,13 @@ import com.esotericsoftware.kryonet.Server;
 
 import ecs.GameObject;
 import ecs.SpriteRenderer;
-import game.network.KryoRegister;
-import game.network.SomeRequest;
-import game.network.SomeResponse;
 import graphics.Camera;
 import graphics.Color;
 import graphics.Graphics;
 import input.Keyboard;
+import network.KryoRegister;
+import network.SomeRequest;
+import network.SomeResponse;
 import scene.Scene;
 import ui.Text;
 

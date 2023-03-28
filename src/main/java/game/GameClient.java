@@ -6,11 +6,11 @@ import org.lwjgl.glfw.GLFW;
 
 import com.esotericsoftware.kryonet.Client;
 
-import game.network.KryoRegister;
-import game.network.SomeRequest;
 import graphics.Camera;
 import graphics.Graphics;
 import input.Keyboard;
+import network.KryoRegister;
+import network.SomeRequest;
 import scene.Scene;
 
 public class GameClient extends Scene {
