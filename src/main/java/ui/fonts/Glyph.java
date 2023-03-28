@@ -42,10 +42,10 @@ public class Glyph extends Sprite {
         float bottomY = y / (float)texture.getHeight();
 
         uvCoordinates = new Vector2f[] {
-                new Vector2f(rightX, bottomY),
-                new Vector2f(rightX, topY),
-                new Vector2f(leftX, topY),
-                new Vector2f(leftX, bottomY)
+            new Vector2f(rightX, bottomY),
+            new Vector2f(rightX, topY),
+            new Vector2f(leftX, topY),
+            new Vector2f(leftX, bottomY)
         };
     }
 

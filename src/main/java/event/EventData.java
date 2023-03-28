@@ -35,6 +35,19 @@ public class EventData {
     }
 
     /**
+     * Event Data for the Char Event
+     */
+    public static class CharEventData extends EventData {
+        public final int codepoint;
+        public char character;
+
+        public CharEventData(int codepoint) {
+            this.codepoint = codepoint;
+            this.character = (char) codepoint;
+        }
+    }
+
+    /**
      * Event Data for the Mouse Scroll Event
      */
     public static class MouseScrollEventData extends EventData {

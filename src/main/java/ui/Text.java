@@ -12,7 +12,10 @@ import util.MathUtils;
 import util.Transform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Pattern;
+
+import javax.swing.tree.TreeNode;
 
 /**
  * @author Asher Haun
@@ -45,11 +48,6 @@ public class Text {
      */
     public Text (String string, Font font, Color color, float x, float y, int zIndex, boolean isSticky, boolean isCentered) {
         this.text = string;
-        // String sizes are automatically chopped off at a certain length due to rendering speed and memory limitations.
-//        if (string.length() >= TextRenderer.getMaxBatchSize()) {
-//            Logger.logInfo("The String \"" + string.substring(0, 7) + "...\" passed is longer than the allowed string size for text: " + TextRenderer.getMaxBatchSize());
-//            this.text = string.substring(0, TextRenderer.getMaxBatchSize() - 4) + "...";
-//        }
 
         this.font = font;
         this.color = color;
@@ -124,8 +122,18 @@ public class Text {
      */
     public void change (String string) {
         glyphRenderers.clear();
-        this.text = string + " ";
+        this.text = string + ' ';
         generateGlyphs();
+    }
+
+    public void addChar (char c) {
+        this.text = (String)this.text + c;
+        modifyGlyphs();
+    }
+
+    public void removeChar () {
+        this.text = ((String)this.text).substring(0, this.text.length() - 1);
+        modifyGlyphs();
     }
 
     public String getText () {
@@ -159,26 +167,23 @@ public class Text {
     int textHeight;
     float maxTextWidth;
     private void generateGlyphs () {
-
+        lastSequence = text;
         float[] lineLengths = new float[1];
-        if (isCentered) {
-            // Split the CharSequence/string at each line break "\n"
-            Pattern pattern = Pattern.compile("\n");
-            CharSequence[] lines = pattern.split(text);
 
-            // Create and fill and array of line lengths, in pixels for each line of text.
-            lineLengths = new float[lines.length];
-            for (int i = 0; i < lines.length; i++) {
-                lineLengths[i] = calculateLineWidth(lines[i]);
-            }
+        // Split the CharSequence/string at each line break "\n"
+        Pattern pattern = Pattern.compile("\n");
+        CharSequence[] lines = pattern.split(text);
 
-            // Determine which line is the longest
-            for (float i : lineLengths) {
-                if (i > maxTextWidth) {
-                    maxTextWidth = i;
-                }
+        // Create and fill and array of line lengths, in pixels for each line of text.
+        lineLengths = new float[lines.length];
+        maxTextWidth = 0;
+        for (int i = 0; i < lines.length; i++) {
+            lineLengths[i] = calculateLineWidth(lines[i]);
+            
+            if (lineLengths[i] > maxTextWidth) {
+                maxTextWidth = lineLengths[i];
             }
-        }
+        }    
 
         textHeight = font.getHeight(text);
         int lineIncreases = 0;
@@ -225,6 +230,65 @@ public class Text {
         if (textHeight > font.getFontHeight()) {
             drawY += textHeight - font.getFontHeight();
         }
+    }
+
+    /**
+     * Modifies the list of glyphs to reflect changes without having to re-generate the entire list.
+     */
+    private CharSequence lastSequence = text;
+    private void modifyGlyphs () {
+        if (lastSequence == null) return;
+
+        int difference = text.length() - lastSequence.length();
+
+        if (difference > 0) {
+            // Add the difference
+            for (int i = lastSequence.length(); i < text.length(); i++) {
+                ch = text.charAt(i);
+                Glyph g = font.getGlyphs().get(ch);
+                
+                // If the glyphRenderers list is empty, add the first glyph to the list and exit.
+                if (glyphRenderers.size() == 0) {
+                    glyphRenderers.add(new GlyphRenderer(new Transform(transform.getX(), transform.getY(), g.width, g.height), g, this, ch, isSticky, this.color));
+                    continue;
+                }
+
+                // Get the last glyph in the list to use as a reference point for the next glyph.
+                Transform lastGlyph = glyphRenderers.get(glyphRenderers.size() - 1).getLocalTransform();
+                if (lastGlyph == null) {
+                    lastGlyph = new Transform(transform.getX(), transform.getHeight(), 0, 0);
+                }
+
+                glyphRenderers.add(new GlyphRenderer(new Transform(lastGlyph.getX() + lastGlyph.getWidth(), transform.getY(), g.width, g.height), g, this, ch, isSticky, this.color));
+            }
+        } else {
+            // Remove the difference
+            for (int i = 0; i < Math.abs(difference); i++) {
+                glyphRenderers.remove(glyphRenderers.size() - 1);
+            }
+        }
+
+        // Calculate the longest line of text
+        float[] lineLengths = new float[1];
+
+        // Split the CharSequence/string at each line break "\n"
+        Pattern pattern = Pattern.compile("\n");
+        CharSequence[] lines = pattern.split(text);
+
+        // Create and fill and array of line lengths, in pixels for each line of text.
+        lineLengths = new float[lines.length];
+        maxTextWidth = 0;
+        for (int i = 0; i < lines.length; i++) {
+            lineLengths[i] = calculateLineWidth(lines[i]);
+
+            if (lineLengths[i] > maxTextWidth) {
+                maxTextWidth = lineLengths[i];
+            }
+        }
+
+        System.out.println("Line lengths: " + Arrays.toString(lineLengths) + " Max: " + maxTextWidth);
+        
+        lastSequence = text;
     }
 
     public ArrayList<GlyphRenderer> getGlyphRenderers () {

@@ -3,9 +3,12 @@ package ui.element;
 import graphics.Color;
 import graphics.Sprite;
 import org.lwjgl.glfw.GLFW;
+
+import ui.CursorManager;
 import ui.Frame;
 import ui.RenderableElement;
 import ui.Text;
+import util.Engine;
 
 /**
  * @author Juyas
@@ -22,6 +25,9 @@ public class Button extends RenderableElement implements TextHolder {
         this.label = new Text(label, labelColor, 0, 0);
         this.label.setCentered(true);
         this.cursor = GLFW.GLFW_POINTING_HAND_CURSOR;
+        
+        Engine.getInstance().scenes().currentScene().addUIElement(this);
+        Engine.getInstance().scenes().currentScene().uiRenderer.add(this);
     }
 
     public Button(String label, String path, Color labelColor, Frame frame) {
@@ -29,6 +35,9 @@ public class Button extends RenderableElement implements TextHolder {
         this.label = new Text(label, labelColor, 0, 0);
         this.label.setCentered(true);
         this.cursor = GLFW.GLFW_POINTING_HAND_CURSOR;
+
+        Engine.getInstance().scenes().currentScene().addUIElement(this);
+        Engine.getInstance().scenes().currentScene().uiRenderer.add(this);
     }
 
     public Button(String label, Sprite texture, Color labelColor, Frame frame) {
@@ -36,6 +45,9 @@ public class Button extends RenderableElement implements TextHolder {
         this.label = new Text(label, labelColor, 0, 0);
         this.label.setCentered(true);
         this.cursor = GLFW.GLFW_POINTING_HAND_CURSOR;
+
+        Engine.getInstance().scenes().currentScene().addUIElement(this);
+        Engine.getInstance().scenes().currentScene().uiRenderer.add(this);
     }
 
     @Override

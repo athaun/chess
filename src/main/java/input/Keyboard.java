@@ -54,6 +54,10 @@ public class Keyboard {
 
             Events.keyEvent.onEvent(new EventData.KeyEventData(keycode, scancode, action, mods));
         });
+
+        glfwSetCharCallback(Window.glfwWindow(), (w, codepoint) -> {
+            Events.charEvent.onEvent(new EventData.CharEventData(codepoint));
+        });
     }
 
     private static void setKeyDownBit(int keycode) {

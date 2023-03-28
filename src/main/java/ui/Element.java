@@ -74,10 +74,15 @@ public abstract class Element {
     public void update() {
         //to reduce redundant calculation, it gets- calculated each update once
         this.mouseOverThis = MathUtils.inRect(Mouse.mouse, getX(), getY(), getWidth(), getHeight());
-        if (isMouseOnThis())
+        if (isMouseOnThis()) {
             CursorManager.requestCursor(this.cursor);
-        if (eventHandler != null)
+        } else { 
+            CursorManager.resetCursor();
+        }
+
+        if (eventHandler != null) {
             eventHandler.update();
+        }
         postUpdate();
     }
 

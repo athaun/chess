@@ -3,6 +3,8 @@ package event;
 import java.util.LinkedList;
 import java.util.List;
 
+import event.EventData.CharEventData;
+
 /**
  * A class which can handle Event listeners. Automatically calls all listeners when event occurs
  *
