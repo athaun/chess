@@ -33,14 +33,12 @@ public class Chess extends Scene {
 
     public void awake() {
         camera = new Camera();
-        setDefaultBackground(220);
+        setDefaultBackground(Color.CYAN);
 
         openSans = new Font("src/assets/fonts/OpenSans.ttf", 20, true);
         titleText = new Text("YEET", openSans, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
     
         tf = new TextField(":)", new Frame(10, 10, 200, 25));
-        addUIElement(tf);
-        uiRenderer.add(tf);
         //hiii
     }
 
