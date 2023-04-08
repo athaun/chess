@@ -41,6 +41,7 @@ public class Chess extends Scene {
         tf = new TextField(":)", new Frame(10, 10, 200, 25));
         addUIElement(tf);
         uiRenderer.add(tf);
+        //hiii
     }
 
     public void update() {
