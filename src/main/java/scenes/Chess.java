@@ -6,6 +6,8 @@ import graphics.Window;
 import scene.Scene;
 import ui.Frame;
 import ui.Text;
+import ui.EventHandler.Event;
+import ui.element.Button;
 import ui.element.TextField;
 import ui.fonts.Font;
 import util.Engine;
@@ -24,6 +26,8 @@ public class Chess extends Scene {
 
     TextField tf;
 
+    Button button;
+
     public static void main (String[] args) {
         Engine.init(1080, 720, "Chess");
         Engine.scenes().switchScene(new Chess());
@@ -40,6 +44,11 @@ public class Chess extends Scene {
     
         tf = new TextField(":)", new Frame(10, 10, 200, 25));
         //hiii
+        button = new Button("Click me!", Color.RED, Color.WHITE, new Frame(10, 50, 200, 25));
+        button.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
+            System.out.println("Button clicked!");
+        });
+        
     }
 
     public void update() {
