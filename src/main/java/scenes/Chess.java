@@ -21,13 +21,17 @@ import static graphics.Graphics.setDefaultBackground;
  */
 public class Chess extends Scene {
 
-    Font openSans;
+    Font animeAceFont;
     Text titleText;
 
     TextField tf;
 
-    Button button;
+    Button hostButton;
+    Button joinButton;
+    Button exitButton;
 
+    Color offWhite = new Color(252, 234, 201); 
+    Color black = new Color(58,54,51);
     public static void main (String[] args) {
         Engine.init(1080, 720, "Chess");
         Engine.scenes().switchScene(new Chess());
@@ -37,16 +41,26 @@ public class Chess extends Scene {
 
     public void awake() {
         camera = new Camera();
-        setDefaultBackground(Color.CYAN);
+        setDefaultBackground(Color.GRAY);
 
-        openSans = new Font("src/assets/fonts/OpenSans.ttf", 20, true);
-        titleText = new Text("YEET", openSans, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
+        animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
+        titleText = new Text("CHESS", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
     
-        tf = new TextField(":)", new Frame(10, 10, 200, 25));
-        //hiii
-        button = new Button("Click me!", Color.RED, Color.WHITE, new Frame(10, 50, 200, 25));
-        button.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
-            System.out.println("Button clicked!");
+        //tf = new TextField(":)", new Frame(10, 10, 200, 25));
+        
+        hostButton = new Button("HOST A GAME", offWhite, black, new Frame(450, 100, 200, 75));
+        hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
+            System.out.println("Host button clicked!");
+        });
+
+        joinButton = new Button("JOIN A GAME", black, offWhite, new Frame(450, 200, 200, 75));
+        joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
+            System.out.println("Join button clicked!");
+        });
+
+        exitButton = new Button("EXIT", offWhite, black, new Frame(450, 300, 200, 75));
+        exitButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
+            System.out.println("Exit button clicked!");
         });
         
     }
