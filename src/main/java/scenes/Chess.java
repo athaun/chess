@@ -41,7 +41,7 @@ public class Chess extends Scene {
     Color offWhite = new Color(252, 234, 201); 
     Color black = new Color(58,54,51);
 
-    GameObject test;
+    GameObject blackPawn;
     GameServer server;
     GameClient client;
     public static void main (String[] args) {
@@ -55,9 +55,9 @@ public class Chess extends Scene {
         camera = new Camera();
         setDefaultBackground(Color.GRAY);
 
-        test = new GameObject(new Vector2f(50,50));
+        blackPawn = new GameObject(new Vector2f(50,50));
 
-        test.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(248,435)));
+        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(270,460)));
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
         titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 5, 1, true, true);
