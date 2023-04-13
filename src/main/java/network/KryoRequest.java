@@ -1,5 +1,5 @@
 package network;
 
-public class SomeResponse {
+public class KryoRequest {
     public String text;
 }
