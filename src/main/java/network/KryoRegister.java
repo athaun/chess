@@ -6,8 +6,8 @@ import com.esotericsoftware.kryonet.Server;
 
 public class KryoRegister {
     private static void registerWithKryo (Kryo kryo) {
-        kryo.register(SomeRequest.class);
-        kryo.register(SomeResponse.class);
+        kryo.register(KryoRequest.class);
+        kryo.register(KryoResponse.class);
     }
 
     public static void register (Client client) {

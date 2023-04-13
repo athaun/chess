@@ -10,45 +10,40 @@ import graphics.Camera;
 import graphics.Graphics;
 import input.Keyboard;
 import network.KryoRegister;
-import network.SomeRequest;
+import network.KryoRequest;
 import scene.Scene;
 
-public class GameClient extends Scene {
+public class GameClient {
 
     Client client;
+    String name;
 
-    public void awake () {
-        camera = new Camera();
-        Graphics.setDefaultBackground(graphics.Color.RED);
+    public void join (String name, String ip) {
+
+        this.name = name;
 
         client = new Client();
         client.start();
         try {
-            client.connect(5000, "0.0.0.0", 54555, 54777);
+            client.connect(5000, ip, 54555, 54777);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         KryoRegister.register(client);
         
-        SomeRequest request = new SomeRequest();
-        request.text = "Here is the request";
+        KryoRequest request = new KryoRequest();
+        request.text = "Request sent from " + name + " on join!";
         
         client.sendTCP(request);
     }
 
     int i = 0;
-    public void update () {
-        if (Keyboard.getKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
-            System.exit(1);
-        }
-
-        if (Keyboard.getKeyUp(GLFW.GLFW_KEY_SPACE)) {
+    public void send_i () {
             i ++;
-            SomeRequest request = new SomeRequest();
-            request.text = "Request " + i;
+            KryoRequest request = new KryoRequest();
+            request.text = "Request from " + name + " | " + i;
             
             client.sendTCP(request);
-        }
     }
 }
