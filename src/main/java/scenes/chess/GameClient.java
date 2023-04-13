@@ -1,4 +1,4 @@
-package game;
+package scenes.chess;
 
 import java.io.IOException;
 
