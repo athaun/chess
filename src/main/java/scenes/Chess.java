@@ -15,6 +15,13 @@ import util.Log;
 
 import static graphics.Graphics.setDefaultBackground;
 
+import java.util.Vector;
+
+import org.joml.Vector2f;
+
+import ecs.GameObject;
+import ecs.SpriteRenderer;
+
 
 /**
  * Minimal usage example of the AudioListener and AudioSource components.
@@ -32,8 +39,11 @@ public class Chess extends Scene {
 
     Color offWhite = new Color(252, 234, 201); 
     Color black = new Color(58,54,51);
+
+    GameObject test;
+     
     public static void main (String[] args) {
-        Engine.init(1080, 720, "Chess");
+        Engine.init(1000, 1100, "Chess");
         Engine.scenes().switchScene(new Chess());
         Engine.showWindow();
         Log.setLogLevel(Log.ALL);
@@ -43,8 +53,13 @@ public class Chess extends Scene {
         camera = new Camera();
         setDefaultBackground(Color.GRAY);
 
-        animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
-        titleText = new Text("CHESS", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
+        test = new GameObject(new Vector2f(50,50));
+
+        test.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(248,435)));
+
+        animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
+        titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 5, 1, true, true);
+        //titleText = new Text("CHESS", animeAceFont, black, Window.getWidth() / 2, 5, 1, true, true);
     
         //hostText = new Text("HOST A GAME", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
 
@@ -72,13 +87,22 @@ public class Chess extends Scene {
     //Class for opening actual game with chessboard. 
 
     class ChessGame extends Scene {
-        public ChessGame() {
-            
-        }
+
+        GameObject[][] board = new GameObject[8][8];
+
     
         public void awake() {
             camera = new Camera();
             setDefaultBackground(Color.GRAY);
+
+            int size = Window.getWidth()/8;
+
+            for (int x = 0; x < 8; x++){
+                for (int y = 0; y < 8; y++){
+                    board[x][y] = new GameObject(new Vector2f(size* x, size * y + 100));
+                    board[x][y].addComponent(new SpriteRenderer(Color.randomColor(), new Vector2f(size, size)));
+                }
+            }
 
             new Text("Chess Board :D", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), Color.BLACK, 10, 10);
         }
