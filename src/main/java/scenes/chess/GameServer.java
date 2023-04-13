@@ -26,6 +26,8 @@ public class GameServer {
 
         KryoRegister.register(server);
 
+        System.out.println("Server started");
+
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof KryoRequest) {

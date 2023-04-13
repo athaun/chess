@@ -45,7 +45,7 @@ public class Chess extends Scene {
     GameServer server;
     GameClient client;
     public static void main (String[] args) {
-        Engine.init(1000, 1100, "Chess");
+        Engine.init(800, 900, "Chess");
         Engine.scenes().switchScene(new Chess());
         Engine.showWindow();
         Log.setLogLevel(Log.ALL);
@@ -60,8 +60,7 @@ public class Chess extends Scene {
         test.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(248,435)));
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
-        titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 5, 1, true, true);
-        //titleText = new Text("CHESS", animeAceFont, black, Window.getWidth() / 2, 5, 1, true, true);
+        titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 50, 1, true, true);
     
         //hostText = new Text("HOST A GAME", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
@@ -87,7 +86,7 @@ public class Chess extends Scene {
             client = new GameClient();
             client.join("Not The Server's Client", "0.0.0.0");
 
-            Engine.scenes().switchScene(new joinGame());
+            Engine.scenes().switchScene(new ChessGame());
         });
 
         exitButton = new Button("EXIT", offWhite, black, new Frame(450, 300, 200, 75));
