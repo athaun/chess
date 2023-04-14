@@ -42,6 +42,21 @@ public class Chess extends Scene {
     Color black = new Color(58,54,51);
 
     GameObject blackPawn;
+    GameObject whitePawn;
+
+    GameObject blackQueen;
+    GameObject whiteQueen;
+
+    GameObject blackKing;
+    GameObject whiteKing;
+
+    GameObject blackRook;
+    GameObject whiteRook;
+
+    GameObject blackKnight;
+    GameObject whiteKnight;
+
+
     GameServer server;
     GameClient client;
     public static void main (String[] args) {
@@ -55,9 +70,25 @@ public class Chess extends Scene {
         camera = new Camera();
         setDefaultBackground(Color.GRAY);
 
-        blackPawn = new GameObject(new Vector2f(50,50));
+        blackPawn = new GameObject(new Vector2f(50,50)); //Position of the image on the screen
+        whitePawn = new GameObject(new Vector2f(100,50));
+/* 
+        blackQueen;
+        whiteQueen;
+    
+        blackKing;
+        whiteKing;
+    
+        blackRook;
+        whiteRook;
+    
+        blackKnight;
+        whiteKnight;
+        */
 
-        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(270,460)));
+
+        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(270,460))); //File and file size
+        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white pawn.png", new Vector2f(270,460)));
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
         titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 50, 1, true, true);
