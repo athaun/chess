@@ -19,7 +19,7 @@ public class GameServer {
         
         server.start();
         try {
-            server.bind(54555, 54777);
+            server.bind(54553, 5477);
         } catch (IOException e) {
             e.printStackTrace();
         }
