@@ -13,6 +13,7 @@ import ui.EventHandler.Event;
 import ui.element.Button;
 import ui.element.TextField;
 import ui.fonts.Font;
+import util.Assets;
 import util.Engine;
 import util.Log;
 
@@ -72,26 +73,30 @@ public class Chess extends Scene {
     public void awake() {
         camera = new Camera();
         setDefaultBackground(Color.GRAY);
-
-        blackPawn = new GameObject(new Vector2f(50,50)); //Position of the image on the screen
-        whitePawn = new GameObject(new Vector2f(100,50));
-/* 
+        
+        
+        /* 
         blackQueen;
         whiteQueen;
     
         blackKing;
         whiteKing;
-    
+        
         blackRook;
         whiteRook;
-    
+        
         blackKnight;
         whiteKnight;
+        
+        int centerScreen = Window.getWidth()/2;
+        
+        //blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(270,460)));
         */
+        blackPawn = new GameObject(new Vector2f((Window.getWidth()/2)-300,25)); //Position of the image on the screen
+        whitePawn = new GameObject(new Vector2f((Window.getWidth()/2) + 150 ,25));
 
-
-        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(270,460))); //File and file size
-        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white pawn.png", new Vector2f(270,460)));
+        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(135,230))); //File and file size
+        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white pawn.png", new Vector2f(135,230)));
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
         titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 50, 1, true, true);
@@ -100,7 +105,7 @@ public class Chess extends Scene {
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
         //titleText = new Text("CHESS", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
 
-        hostButton = new Button("HOST A GAME", offWhite, black, new Frame(450, 100, 200, 75));
+        hostButton = new Button("HOST A GAME", offWhite, black, new Frame(300, 225, 200, 75));
         hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             System.out.println("Host button clicked!");
 
@@ -112,24 +117,25 @@ public class Chess extends Scene {
 
             Engine.scenes().switchScene(new ChessGame());
         });
-
-        joinButton = new Button("JOIN A GAME", black, offWhite, new Frame(450, 200, 200, 75));
+    
+        joinButton = new Button("JOIN A GAME", black, offWhite, new Frame(300, 350, 200, 75));
         joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             System.out.println("Join button clicked!");
-
+            
             client = new GameClient();
             client.join("Not The Server's Client", "0.0.0.0");
-
+            
             Engine.scenes().switchScene(new ChessGame());
         });
-
-        exitButton = new Button("EXIT", offWhite, black, new Frame(450, 300, 200, 75));
+        
+        exitButton = new Button("EXIT", offWhite, black, new Frame(300, 475, 200, 75));
         exitButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             System.out.println("Exit button clicked!");
         });
-
+        
+        /* 
+        */
     }
-
     // Class for opening actual game with chessboard.
 
     class ChessGame extends Scene {
@@ -137,6 +143,7 @@ public class Chess extends Scene {
         GameObject[][] board = new GameObject[8][8];
 
         Text info;
+        Text turn;
         
         public void awake() {
             camera = new Camera();
@@ -154,9 +161,14 @@ public class Chess extends Scene {
                     else
                     board[x][y].addComponent(new SpriteRenderer(brown, new Vector2f(size, size)));
                 }
-            }
+        }
+        //board[0][0].addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(45,77)));
+            //blackPawn = new GameObject(new Vector2f(0,50));
+            //board[0][0].addComponent(new SpriteRenderer(Assets.getTexture("src/assets/images/black pawn.png"), new Vector2f(45,77)));
 
-            info = new Text("Chess Board :D", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), Color.BLACK, 10, 10);
+
+            info = new Text("Your IP is:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, 10, 10);
+            turn = new Text("Turn:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, Window.getWidth()/2, 10);
         }
 
         public void update () {
@@ -173,6 +185,7 @@ public class Chess extends Scene {
             }
         }
     }
+
 
     class joinGame extends Scene {
 
