@@ -41,6 +41,9 @@ public class Chess extends Scene {
     Color offWhite = new Color(252, 234, 201); 
     Color black = new Color(58,54,51);
 
+    Color brown = new Color(193, 114, 86);
+    Color tan = new Color(251,223,188,255);
+
     GameObject blackPawn;
     GameObject whitePawn;
 
@@ -95,7 +98,7 @@ public class Chess extends Scene {
     
         //hostText = new Text("HOST A GAME", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
-        titleText = new Text("CHESS", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
+        //titleText = new Text("CHESS", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
 
         hostButton = new Button("HOST A GAME", offWhite, black, new Frame(450, 100, 200, 75));
         hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
@@ -144,7 +147,12 @@ public class Chess extends Scene {
             for (int x = 0; x < 8; x++){
                 for (int y = 0; y < 8; y++){
                     board[x][y] = new GameObject(new Vector2f(size* x, size * y + 100));
-                    board[x][y].addComponent(new SpriteRenderer(Color.randomColor(), new Vector2f(size, size)));
+                    
+                    if ((x + y) % 2 == 0)
+                    board[x][y].addComponent(new SpriteRenderer(tan, new Vector2f(size, size)));
+                    
+                    else
+                    board[x][y].addComponent(new SpriteRenderer(brown, new Vector2f(size, size)));
                 }
             }
 
