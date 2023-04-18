@@ -79,8 +79,8 @@ public class Chess extends Scene {
         blackPawn = new GameObject(new Vector2f((Window.getWidth()/2)-300,25)); //Position of the image on the screen
         whitePawn = new GameObject(new Vector2f((Window.getWidth()/2) + 150 ,25));
 
-        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(135,230))); //File and file size
-        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white pawn.png", new Vector2f(135,230)));
+        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black_pawn.png", new Vector2f(135,230))); //File and file size
+        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white_pawn.png", new Vector2f(135,230)));
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
         titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 50, 1, true, true);

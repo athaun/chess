@@ -25,7 +25,7 @@ public class GameClient {
         client = new Client();
         client.start();
         try {
-            client.connect(5000, ip, 54555, 54777);
+            client.connect(5000, ip, 54553, 54777);
         } catch (IOException e) {
             e.printStackTrace();
         }

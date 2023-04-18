@@ -36,6 +36,11 @@ class ChessBoard extends Chess{
     GameObject whiteKnightOne;
     GameObject whiteKnightTwo;
 
+    GameObject blackBishopOne;
+    GameObject blackBishopTwo;
+    GameObject whiteBishopOne;
+    GameObject whiteBishopTwo;
+
     Text info;
     Text turn;
     
@@ -45,14 +50,8 @@ class ChessBoard extends Chess{
 
         int sizeHori = Window.getWidth()/8;
         int sizeVert = Window.getHeight()/9;
-        //For loop for placing black pawns.
-/*
-        for (int y = 0; y < 8; ++y){
-            board[y][1].addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(45,77)));
-        }
-        */
-        //For loop for placing white pawns.
 
+        //For loops place the chess board down.
         for (int x = 0; x < 8; x++){
             for (int y = 0; y < 8; y++){
                 board[x][y] = new GameObject(new Vector2f(sizeHori* x, sizeHori* y + 100));
@@ -64,50 +63,58 @@ class ChessBoard extends Chess{
                 board[x][y].addComponent(new SpriteRenderer(brown, new Vector2f(sizeHori, sizeHori)));
             }
     }
-    
+    //Adds black pawn pieces.
     for (int x = 0; x < 8; ++x){
         blackPawns[x] = new GameObject(new Vector2f(sizeHori * x + 20 ,sizeVert + 100), 0); 
-        blackPawns[x].addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(56, 96))); //Pawn divided by 5.
+        blackPawns[x].addComponent(new SpriteRenderer("src/assets/images/black_pawn.png", new Vector2f(56, 96))); //Pawn divided by 5.
     }
 
+    //Adds white pawn pieces. 
     for (int x = 0; x < 8; ++x){
         whitePawns[x] = new GameObject(new Vector2f(sizeHori * x + 20 ,sizeVert + 600), 0); 
-        whitePawns[x].addComponent(new SpriteRenderer("src/assets/images/white pawn.png", new Vector2f(56, 96))); //Pawn divided by 5.
+        whitePawns[x].addComponent(new SpriteRenderer("src/assets/images/white_pawn.png", new Vector2f(56, 96))); //Pawn divided by 5.
     }
 
+    //Rook Pieces
     blackRookOne = new GameObject(new Vector2f(20 ,sizeVert), 0); 
-    blackRookOne.addComponent(new SpriteRenderer("src/assets/images/black rook.png", new Vector2f(56, 96)));
+    blackRookOne.addComponent(new SpriteRenderer("src/assets/images/black_rook.png", new Vector2f(56, 96)));
     blackRookTwo = new GameObject(new Vector2f(720 ,sizeVert), 0); 
-    blackRookTwo.addComponent(new SpriteRenderer("src/assets/images/black rook.png", new Vector2f(60, 100)));
-    
+    blackRookTwo.addComponent(new SpriteRenderer("src/assets/images/black_rook.png", new Vector2f(60, 100)));
+
     whiteRookOne = new GameObject(new Vector2f(20 ,sizeVert + 700), 0); 
-    whiteRookOne.addComponent(new SpriteRenderer("src/assets/images/white rook.png", new Vector2f(56, 96)));
+    whiteRookOne.addComponent(new SpriteRenderer("src/assets/images/white_rook.png", new Vector2f(56, 96)));
     whiteRookTwo = new GameObject(new Vector2f(720 ,sizeVert + 700), 0); 
-    whiteRookTwo.addComponent(new SpriteRenderer("src/assets/images/white rook.png", new Vector2f(60, 100)));
+    whiteRookTwo.addComponent(new SpriteRenderer("src/assets/images/white_rook.png", new Vector2f(60, 100)));
 
+    //Knight Pieces
     blackKnightOne = new GameObject(new Vector2f(120,sizeVert)); 
-    blackKnightOne.addComponent(new SpriteRenderer("src/assets/images/black knight.png", new Vector2f(56, 96)));
+    blackKnightOne.addComponent(new SpriteRenderer("src/assets/images/black_knight.png", new Vector2f(56, 96)));
     blackKnightTwo = new GameObject(new Vector2f(620,sizeVert)); 
-    blackKnightTwo.addComponent(new SpriteRenderer("src/assets/images/black knight.png", new Vector2f(56, 96)));
-
+    blackKnightTwo.addComponent(new SpriteRenderer("src/assets/images/black_knight.png", new Vector2f(56, 96)));
 
     whiteKnightOne = new GameObject(new Vector2f(120,sizeVert + 700)); 
-    whiteKnightOne.addComponent(new SpriteRenderer("src/assets/images/white knight.png", new Vector2f(56, 96)));
+    whiteKnightOne.addComponent(new SpriteRenderer("src/assets/images/white_knight.png", new Vector2f(56, 96)));
     whiteKnightTwo = new GameObject(new Vector2f(620, sizeVert + 700)); 
-    whiteKnightTwo.addComponent(new SpriteRenderer("src/assets/images/white knight.png", new Vector2f(56, 96)));
+    whiteKnightTwo.addComponent(new SpriteRenderer("src/assets/images/white_knight.png", new Vector2f(56, 96)));
     
-    blackQueen = new GameObject(new Vector2f(320,sizeVert)); 
-    blackQueen.addComponent(new SpriteRenderer("src/assets/images/black queen.png", new Vector2f(56, 100)));
-
-    whiteQueen = new GameObject(new Vector2f(320,sizeVert+700)); 
-    whiteQueen.addComponent(new SpriteRenderer("src/assets/images/black queen.png", new Vector2f(56,96 )));
-
+    //Queen Pieces
     /*
+    blackQueen = new GameObject(new Vector2f(320,sizeVert)); 
+    blackQueen.addComponent(new SpriteRenderer("src/assets/images/black_queen.png", new Vector2f(56, 100)));
+    whiteQueen = new GameObject(new Vector2f(320,sizeVert+700)); 
+    whiteQueen.addComponent(new SpriteRenderer("src/assets/images/black_queen.png", new Vector2f(56,96 )));
+
+    //Goes after knight on board. 
+    blackBishopOne = new GameObject(new Vector2f(220,sizeVert)); 
+    blackBishopOne.addComponent(new SpriteRenderer("src/assets/images/black_bishop.png", new Vector2f(56, 100)));
+    blackBishopTwo = new GameObject(new Vector2f(220,sizeVert)); 
+    blackBishopTwo.addComponent(new SpriteRenderer("src/assets/images/black_bishop.png", new Vector2f(56, 100)));
     whiteQueen = new GameObject(new Vector2f(320,sizeVert)); 
-    whiteQueen.addComponent(new SpriteRenderer("src/assets/images/white queen.png", new Vector2f(10, 10)));
+    whiteQueen.addComponent(new SpriteRenderer("src/assets/images/white_queen.png", new Vector2f(10, 10)));
+    
     blackKing = new GameObject(new Vector2f(420,sizeVert)); 
-    blackKing.addComponent(new SpriteRenderer("src/assets/images/black king.png", new Vector2f(56, 100)));
-*/
+    blackKing.addComponent(new SpriteRenderer("src/assets/images/black_king.png", new Vector2f(56, 100)));
+    */
         info = new Text("Your IP is:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, 10, 10);
         turn = new Text("Turn:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, Window.getWidth()/2, 10);
     }
