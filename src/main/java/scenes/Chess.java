@@ -2,6 +2,7 @@ package scenes;
 
 import graphics.Camera;
 import graphics.Color;
+import graphics.Sprite;
 import graphics.Window;
 import input.Keyboard;
 import scene.Scene;
@@ -16,16 +17,12 @@ import ui.fonts.Font;
 import util.Assets;
 import util.Engine;
 import util.Log;
-
 import static graphics.Graphics.setDefaultBackground;
-
 import java.util.Vector;
-
 import org.joml.Vector2f;
-
 import ecs.GameObject;
+import ecs.PointLight;
 import ecs.SpriteRenderer;
-
 import org.lwjgl.glfw.GLFW;
 
 public class Chess extends Scene {
@@ -47,19 +44,6 @@ public class Chess extends Scene {
 
     GameObject blackPawn;
     GameObject whitePawn;
-
-    GameObject blackQueen;
-    GameObject whiteQueen;
-
-    GameObject blackKing;
-    GameObject whiteKing;
-
-    GameObject blackRook;
-    GameObject whiteRook;
-
-    GameObject blackKnight;
-    GameObject whiteKnight;
-
 
     GameServer server;
     GameClient client;
@@ -115,7 +99,7 @@ public class Chess extends Scene {
             client = new GameClient();
             client.join("Server's client", "0.0.0.0");
 
-            Engine.scenes().switchScene(new ChessGame());
+            Engine.scenes().switchScene(new ChessBoard());
         });
     
         joinButton = new Button("JOIN A GAME", black, offWhite, new Frame(300, 350, 200, 75));
@@ -125,7 +109,7 @@ public class Chess extends Scene {
             client = new GameClient();
             client.join("Not The Server's Client", "0.0.0.0");
             
-            Engine.scenes().switchScene(new ChessGame());
+            Engine.scenes().switchScene(new ChessBoard());
         });
         
         exitButton = new Button("EXIT", offWhite, black, new Frame(300, 475, 200, 75));
@@ -136,56 +120,6 @@ public class Chess extends Scene {
         /* 
         */
     }
-    // Class for opening actual game with chessboard.
-
-    class ChessGame extends Scene {
-
-        GameObject[][] board = new GameObject[8][8];
-
-        Text info;
-        Text turn;
-        
-        public void awake() {
-            camera = new Camera();
-            setDefaultBackground(Color.GRAY);
-
-            int size = Window.getWidth()/8;
-
-            for (int x = 0; x < 8; x++){
-                for (int y = 0; y < 8; y++){
-                    board[x][y] = new GameObject(new Vector2f(size* x, size * y + 100));
-                    
-                    if ((x + y) % 2 == 0)
-                    board[x][y].addComponent(new SpriteRenderer(tan, new Vector2f(size, size)));
-                    
-                    else
-                    board[x][y].addComponent(new SpriteRenderer(brown, new Vector2f(size, size)));
-                }
-        }
-        //board[0][0].addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(45,77)));
-            //blackPawn = new GameObject(new Vector2f(0,50));
-            //board[0][0].addComponent(new SpriteRenderer(Assets.getTexture("src/assets/images/black pawn.png"), new Vector2f(45,77)));
-
-
-            info = new Text("Your IP is:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, 10, 10);
-            turn = new Text("Turn:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, Window.getWidth()/2, 10);
-        }
-
-        public void update () {
-            if (Keyboard.getKeyDown(GLFW.GLFW_KEY_SPACE)) {
-                client.send_i();
-                System.out.println("Client sending!");
-            }
-            if (server != null) {
-                String s = "";
-                for (String i : server.messages) {
-                    s = i;
-                }
-                info.change(s);
-            }
-        }
-    }
-
 
     class joinGame extends Scene {
 
@@ -209,7 +143,7 @@ public class Chess extends Scene {
 
             enter.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
                 System.out.println("Enter button clicked!");
-                Engine.scenes().switchScene(new ChessGame());
+                Engine.scenes().switchScene(new ChessBoard());
             });
 
         }
