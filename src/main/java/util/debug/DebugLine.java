@@ -1,6 +1,5 @@
 package util.debug;
 
-import ecs.Component;
 import graphics.Color;
 import org.joml.Vector2f;
 

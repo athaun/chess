@@ -4,7 +4,6 @@ import graphics.Color;
 import graphics.Sprite;
 import org.lwjgl.glfw.GLFW;
 
-import ui.CursorManager;
 import ui.Frame;
 import ui.RenderableElement;
 import ui.Text;

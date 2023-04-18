@@ -4,9 +4,6 @@ import org.lwjgl.glfw.GLFW;
 
 import event.Events;
 import graphics.Color;
-import input.Keyboard;
-import ui.CursorManager;
-import ui.Element;
 import ui.EventHandler;
 import ui.Frame;
 import ui.RenderableElement;
@@ -14,7 +11,6 @@ import ui.Text;
 import ui.EventHandler.Event;
 import ui.fonts.Font;
 import util.Engine;
-import util.Log;
 
 /**
  * @author Juyas

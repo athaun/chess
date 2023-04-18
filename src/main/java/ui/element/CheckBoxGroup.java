@@ -4,7 +4,6 @@ import graphics.Sprite;
 import org.joml.Vector2f;
 import ui.Element;
 import util.Engine;
-import util.Observable;
 
 import java.util.ArrayList;
 import java.util.List;

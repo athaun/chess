@@ -4,7 +4,6 @@ import input.Keyboard;
 import input.Keys;
 import org.joml.Vector2f;
 import physics.force.Force;
-import util.Engine;
 
 /**
  * Character controllers built to support the Top down and Side scroller Demo scenes.
