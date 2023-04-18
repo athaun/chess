@@ -2,9 +2,7 @@ package scenes;
 
 import graphics.Camera;
 import graphics.Color;
-import graphics.Sprite;
 import graphics.Window;
-import input.Keyboard;
 import scene.Scene;
 import scenes.chess.GameClient;
 import scenes.chess.GameServer;
@@ -14,16 +12,12 @@ import ui.EventHandler.Event;
 import ui.element.Button;
 import ui.element.TextField;
 import ui.fonts.Font;
-import util.Assets;
 import util.Engine;
 import util.Log;
 import static graphics.Graphics.setDefaultBackground;
-import java.util.Vector;
 import org.joml.Vector2f;
 import ecs.GameObject;
-import ecs.PointLight;
 import ecs.SpriteRenderer;
-import org.lwjgl.glfw.GLFW;
 
 public class Chess extends Scene {
     Font animeAceFont;
