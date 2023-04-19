@@ -48,6 +48,12 @@ class ChessBoard extends Chess {
             System.out.println("Client sending!");
         }
 
+        // exit the chessboard by pressing escape
+        if(Keyboard.getKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
+            System.out.println("Client shutting down!");
+            System.exit(0);
+        }
+
         if (server != null) {
             String s = "";
             for (String i : server.messages) {
