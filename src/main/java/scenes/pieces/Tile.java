@@ -87,9 +87,9 @@ public class Tile {
         if (checkClick()) {
             System.out.println("Clicked on tile " + x + ", " + y);
         }
-
-
     }
+
+    private boolean pMouseDown = false;
 
     public boolean checkClick () {
         if (Mouse.mouseX > renderX && Mouse.mouseY > renderY && Mouse.mouseX < renderX + size && Mouse.mouseY < renderY + size) {
@@ -100,9 +100,13 @@ public class Tile {
                 spriteRenderer.setColor(blackHovered);
             }
 
-            if (Mouse.mouseButtonDown(0)) {
+            if (Mouse.mouseButtonDown(0) && !pMouseDown) {
                 // Left mouse button is pressed
+                pMouseDown = true;
                 return true;
+            } else if (!Mouse.mouseButtonDown(0) && pMouseDown) {
+                // Left mouse button is released
+                pMouseDown = false;
             }
         } else {
             if (light) {

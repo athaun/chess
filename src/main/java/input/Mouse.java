@@ -149,7 +149,7 @@ public class Mouse {
         }
         return false;
     }
-
+    
     /**
      * Clear the mouse state
      */
