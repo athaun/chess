@@ -1,7 +1,5 @@
 package graphics;
 
-import graphics.Sprite;
-import graphics.Texture;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;

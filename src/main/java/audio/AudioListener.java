@@ -1,9 +1,7 @@
 package audio;
 
-import ecs.Component;
 import graphics.Camera;
 import org.joml.Vector2f;
-import util.Engine;
 
 import static org.lwjgl.openal.AL10.*;
 

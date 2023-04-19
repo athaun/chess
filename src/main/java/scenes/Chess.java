@@ -73,7 +73,7 @@ public class Chess extends Scene {
             server.start();
 
             client = new GameClient();
-            client.join("Server's client", "0.0.0.0");
+            client.join("Server's client", "127.0.0.1");
 
             Engine.scenes().switchScene(new ChessBoard());
         });
@@ -83,7 +83,7 @@ public class Chess extends Scene {
             System.out.println("Join button clicked!");
             
             client = new GameClient();
-            client.join("Not The Server's Client", "0.0.0.0");
+            client.join("Not The Server's Client", "127.0.0.1");
             
             Engine.scenes().switchScene(new ChessBoard());
         });

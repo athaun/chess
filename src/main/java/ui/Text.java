@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import javax.swing.tree.TreeNode;
-
 /**
  * @author Asher Haun
  * Represents a renderable string containing a TTF font reference, color data, and font size.

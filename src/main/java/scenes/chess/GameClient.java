@@ -2,16 +2,10 @@ package scenes.chess;
 
 import java.io.IOException;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.esotericsoftware.kryonet.Client;
 
-import graphics.Camera;
-import graphics.Graphics;
-import input.Keyboard;
 import network.KryoRegister;
 import network.KryoRequest;
-import scene.Scene;
 
 public class GameClient {
 
