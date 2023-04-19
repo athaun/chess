@@ -8,14 +8,20 @@ import java.util.ArrayList;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+
+import network.KryoProbe;
+import network.KryoProbeResponse;
 import network.KryoRegister;
 import network.KryoRequest;
 import network.KryoResponse;
+import util.MathUtils;
 
 public class GameServer {
 
     Server server = new Server();
     public ArrayList<String> messages = new ArrayList<String>();
+
+    private static int gameID = 0;
 
     public static String getIp () {
         try {
@@ -31,6 +37,8 @@ public class GameServer {
     }
 
     public void start () {
+
+        gameID = MathUtils.randomInt(100000, 999999);
         
         server.start();
         try {
@@ -53,6 +61,14 @@ public class GameServer {
 
                     KryoResponse response = new KryoResponse();
                     response.text = "Hello World!";
+                    connection.sendTCP(response);
+                } else if (object instanceof KryoProbe) {
+                    KryoProbeResponse response = new KryoProbeResponse();
+                    response.gameID = gameID;
+                    response.open = true;
+
+                    System.out.println(response.gameID);
+
                     connection.sendTCP(response);
                 }
             }
