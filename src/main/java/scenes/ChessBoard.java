@@ -10,7 +10,6 @@ import ui.fonts.Font;
 import static graphics.Graphics.setDefaultBackground;
 import org.joml.Vector2f;
 import ecs.GameObject;
-import ecs.PointLight;
 import ecs.SpriteRenderer;
 import org.lwjgl.glfw.GLFW;
 
