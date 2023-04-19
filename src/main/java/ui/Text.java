@@ -94,6 +94,11 @@ public class Text {
         this(string, new Font(), Color.BLUE, x, y, 1, false, false);
     }
 
+    public void changeFontSize (int size) {
+        font = font.changeSize(size);
+        generateGlyphs();
+    }
+
     /**
      * Update method called for every text object by the scene.Scene.updateUI() method.
      * This should not be called by general users.

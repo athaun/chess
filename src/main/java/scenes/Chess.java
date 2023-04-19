@@ -55,8 +55,7 @@ public class Chess extends Scene {
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
         titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 90, 1, true, true);
-        // animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
-        animeAceFont.changeSize(48);
+        animeAceFont = animeAceFont.changeSize(48);
 
         hostButton = new Button("HOST A GAME", offWhite, black, new Frame(300, 225, 200, 75));
         hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
