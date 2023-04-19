@@ -2,16 +2,10 @@ package scenes.chess;
 
 import java.io.IOException;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.esotericsoftware.kryonet.Client;
 
-import graphics.Camera;
-import graphics.Graphics;
-import input.Keyboard;
 import network.KryoRegister;
 import network.KryoRequest;
-import scene.Scene;
 
 public class GameClient {
 
@@ -40,10 +34,10 @@ public class GameClient {
 
     int i = 0;
     public void send_i () {
-            i ++;
-            KryoRequest request = new KryoRequest();
-            request.text = "Request from " + name + " | " + i;
-            
-            client.sendTCP(request);
+        i ++;
+        KryoRequest request = new KryoRequest();
+        request.text = "Request from " + name + " | " + i;
+        
+        client.sendTCP(request);
     }
 }

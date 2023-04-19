@@ -2,7 +2,10 @@ build/
 .gradle/*
 
 *.class
-
+*.DS_Store
+bin/
+bin/*
+/bin/
 
 *.war
 *.ear
@@ -22,3 +25,5 @@ hs_err_pid*
 
 .*
 !/.gitignore
+src/.DS_Store
+src/.DS_Store
