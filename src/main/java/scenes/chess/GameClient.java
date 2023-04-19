@@ -40,10 +40,10 @@ public class GameClient {
 
     int i = 0;
     public void send_i () {
-            i ++;
-            KryoRequest request = new KryoRequest();
-            request.text = "Request from " + name + " | " + i;
-            
-            client.sendTCP(request);
+        i ++;
+        KryoRequest request = new KryoRequest();
+        request.text = "Request from " + name + " | " + i;
+        
+        client.sendTCP(request);
     }
 }

@@ -1,6 +1,8 @@
 package scenes.chess;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -14,6 +16,19 @@ public class GameServer {
 
     Server server = new Server();
     public ArrayList<String> messages = new ArrayList<String>();
+
+    public static String getIp () {
+        try {
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress("google.com", 80));
+            String ip = socket.getLocalAddress().getHostAddress();
+            socket.close();
+            return ip;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error Finding IP";
+        }
+    }
 
     public void start () {
         
