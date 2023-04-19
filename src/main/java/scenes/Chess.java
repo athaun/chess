@@ -22,10 +22,7 @@ import ecs.SpriteRenderer;
 public class Chess extends Scene {
     Font animeAceFont;
     Text titleText;
-    Text hostText;
     Text creditText;
-
-    TextField tf;
 
     Button hostButton;
     Button joinButton;
@@ -34,11 +31,8 @@ public class Chess extends Scene {
     Color offWhite = new Color(252, 234, 201); 
     Color black = new Color(58,54,51);
 
-    Color brown = new Color(193, 114, 86);
-    Color tan = new Color(251,223,188,255);
-
-    GameObject blackPawn;
-    GameObject whitePawn;
+    GameObject blackKnight;
+    GameObject whiteKnight;
 
     GameServer server;
     GameClient client;
@@ -54,16 +48,15 @@ public class Chess extends Scene {
         camera = new Camera();
         setDefaultBackground(30, 30, 30);
 
-        blackPawn = new GameObject(new Vector2f((Window.getWidth()/2) - 325, 25));
-        whitePawn = new GameObject(new Vector2f((Window.getWidth()/2) + 175, 25));
+        // Knight sprites
+        blackKnight = new GameObject(new Vector2f((Window.getWidth()/2) - 325, 25)).addComponent(new SpriteRenderer("src/assets/images/black_knight.png", new Vector2f(135, 230)));
+        whiteKnight = new GameObject(new Vector2f((Window.getWidth()/2) + 175, 25)).addComponent(new SpriteRenderer("src/assets/images/white_knight.png", new Vector2f(135, 230)));
 
-        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black_knight.png", new Vector2f(135, 230)));
-        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white_knight.png", new Vector2f(135, 230)));
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
         titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 90, 1, true, true);
-    
-        animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
+        // animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
+        animeAceFont.changeSize(48);
 
         hostButton = new Button("HOST A GAME", offWhite, black, new Frame(300, 225, 200, 75));
         hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
@@ -97,6 +90,8 @@ public class Chess extends Scene {
     }
 
     class joinGame extends Scene {
+
+        TextField tf;
 
         public joinGame() {
 
