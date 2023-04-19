@@ -23,6 +23,7 @@ public class Chess extends Scene {
     Font animeAceFont;
     Text titleText;
     Text hostText;
+    Text creditText;
 
     TextField tf;
 
@@ -48,40 +49,21 @@ public class Chess extends Scene {
         Log.setLogLevel(Log.ALL);
     }
 
+
     public void awake() {
         camera = new Camera();
-        setDefaultBackground(Color.GRAY);
-        
-        
-        /* 
-        blackQueen;
-        whiteQueen;
-    
-        blackKing;
-        whiteKing;
-        
-        blackRook;
-        whiteRook;
-        
-        blackKnight;
-        whiteKnight;
-        
-        int centerScreen = Window.getWidth()/2;
-        
-        //blackPawn.addComponent(new SpriteRenderer("src/assets/images/black pawn.png", new Vector2f(270,460)));
-        */
-        blackPawn = new GameObject(new Vector2f((Window.getWidth()/2)-300,25)); //Position of the image on the screen
-        whitePawn = new GameObject(new Vector2f((Window.getWidth()/2) + 150 ,25));
+        setDefaultBackground(30, 30, 30);
 
-        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black_pawn.png", new Vector2f(135,230))); //File and file size
-        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white_pawn.png", new Vector2f(135,230)));
+        blackPawn = new GameObject(new Vector2f((Window.getWidth()/2) - 325, 25));
+        whitePawn = new GameObject(new Vector2f((Window.getWidth()/2) + 175, 25));
+
+        blackPawn.addComponent(new SpriteRenderer("src/assets/images/black_knight.png", new Vector2f(135, 230)));
+        whitePawn.addComponent(new SpriteRenderer("src/assets/images/white_knight.png", new Vector2f(135, 230)));
 
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 72, true);
-        titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 50, 1, true, true);
+        titleText = new Text("CHESS", animeAceFont, offWhite, Window.getWidth() / 2, 90, 1, true, true);
     
-        //hostText = new Text("HOST A GAME", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
         animeAceFont = new Font("src/assets/fonts/AnimeAce.ttf", 48, true);
-        //titleText = new Text("CHESS", animeAceFont, Color.WHITE, Window.getWidth() / 2, 5, 1, true, true);
 
         hostButton = new Button("HOST A GAME", offWhite, black, new Frame(300, 225, 200, 75));
         hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
@@ -108,11 +90,10 @@ public class Chess extends Scene {
         
         exitButton = new Button("EXIT", offWhite, black, new Frame(300, 475, 200, 75));
         exitButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
-            System.out.println("Exit button clicked!");
+            System.exit(0);
         });
         
-        /* 
-        */
+        creditText = new Text("Created by Asher Haun, Sylvia Flores, Ellie Walser and Younus Syed", new Font(), offWhite, Window.getWidth() / 2, 800, 1, true, true);
     }
 
     class joinGame extends Scene {
