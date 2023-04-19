@@ -2,6 +2,7 @@ package scenes;
 
 import graphics.Camera;
 import graphics.Color;
+import graphics.Spritesheet;
 import graphics.Window;
 import input.Keyboard;
 import ui.Text;
@@ -40,6 +41,8 @@ class ChessBoard extends Chess{
     GameObject blackBishopTwo;
     GameObject whiteBishopOne;
     GameObject whiteBishopTwo;
+
+    Spritesheet pieces; 
 
     Text info;
     Text turn;
@@ -97,24 +100,33 @@ class ChessBoard extends Chess{
     whiteKnightTwo = new GameObject(new Vector2f(620, sizeVert + 700)); 
     whiteKnightTwo.addComponent(new SpriteRenderer("src/assets/images/white_knight.png", new Vector2f(56, 96)));
     
-    //Queen Pieces
-    /*
-    blackQueen = new GameObject(new Vector2f(320,sizeVert)); 
-    blackQueen.addComponent(new SpriteRenderer("src/assets/images/black_queen.png", new Vector2f(56, 100)));
-    whiteQueen = new GameObject(new Vector2f(320,sizeVert+700)); 
-    whiteQueen.addComponent(new SpriteRenderer("src/assets/images/black_queen.png", new Vector2f(56,96 )));
-
     //Goes after knight on board. 
     blackBishopOne = new GameObject(new Vector2f(220,sizeVert)); 
     blackBishopOne.addComponent(new SpriteRenderer("src/assets/images/black_bishop.png", new Vector2f(56, 100)));
-    blackBishopTwo = new GameObject(new Vector2f(220,sizeVert)); 
+    blackBishopTwo = new GameObject(new Vector2f(520,sizeVert)); 
     blackBishopTwo.addComponent(new SpriteRenderer("src/assets/images/black_bishop.png", new Vector2f(56, 100)));
+    
+    whiteBishopTwo = new GameObject(new Vector2f(0,0)); 
+    whiteBishopTwo.addComponent(new SpriteRenderer("src/assets/images/black_bishop.png", new Vector2f(56, 100)));
+    
+    /*
+    blackQueen = new GameObject(new Vector2f(320,sizeVert)); 
+    blackQueen.addComponent(new SpriteRenderer("src/assets/images/black_queen.png", new Vector2f(56, 100)));
+    whiteBishopOne = new GameObject(new Vector2f(0,0)); 
+    whiteBishopOne.addComponent(new SpriteRenderer("src/assets/images/white_bishop.png", new Vector2f(56, 96)));//56,100
+    whiteBishopTwo = new GameObject(new Vector2f(520,sizeVert + 600)); 
+    whiteBishopTwo.addComponent(new SpriteRenderer("src/assets/images/white_bishop.png", new Vector2f(56, 100)));
+    //Queen Pieces
+    whiteQueen = new GameObject(new Vector2f(320,sizeVert+700)); 
+    whiteQueen.addComponent(new SpriteRenderer("src/assets/images/black_queen.png", new Vector2f(56,96 )));
+    
     whiteQueen = new GameObject(new Vector2f(320,sizeVert)); 
     whiteQueen.addComponent(new SpriteRenderer("src/assets/images/white_queen.png", new Vector2f(10, 10)));
     
     blackKing = new GameObject(new Vector2f(420,sizeVert)); 
     blackKing.addComponent(new SpriteRenderer("src/assets/images/black_king.png", new Vector2f(56, 100)));
     */
+    
         info = new Text("Your IP is:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, 10, 10);
         turn = new Text("Turn:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, Window.getWidth()/2, 10);
     }
