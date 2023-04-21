@@ -52,22 +52,16 @@ public class GameServer {
         System.out.println("Server started");
 
         server.addListener(new Listener() {
-            public void received(Connection connection, Object object) {
-                if (object instanceof KryoRequest) {
-                    KryoRequest request = (KryoRequest) object;
-                    
-                    System.out.println(request.text);
-                    messages.add(request.text);
+            public void received(Connection connection, Object req) {
+                // If the request doesn't extend KryoRequest, ignore it.
+                if (!(req instanceof KryoRequest)) return;
 
-                    KryoResponse response = new KryoResponse();
-                    response.text = "Hello World!";
-                    connection.sendTCP(response);
-                } else if (object instanceof KryoProbe) {
+                if (req instanceof KryoProbe) {
                     KryoProbeResponse response = new KryoProbeResponse();
                     response.gameID = gameID;
                     response.open = true;
 
-                    System.out.println(response.gameID);
+                    System.out.println("Responding with ID: " + response.gameID);
 
                     connection.sendTCP(response);
                 }

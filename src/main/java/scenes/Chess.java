@@ -8,6 +8,7 @@ import input.Keys;
 import scene.Scene;
 import scenes.chess.GameClient;
 import scenes.chess.GameServer;
+import scenes.chess.GameClient.GameHost;
 import ui.Frame;
 import ui.Text;
 import ui.EventHandler.Event;
@@ -128,6 +129,8 @@ public class Chess extends Scene {
 
         ArrayList<Button> hosts = new ArrayList<Button>();
 
+        Thread discoveryThread;
+
         public joinGame() {
 
         }
@@ -153,7 +156,9 @@ public class Chess extends Scene {
             //     Engine.scenes().switchScene(new ChessBoard());
             // });
 
-            new Thread(() -> {
+            discoveryThread = new Thread(() -> {
+                // Set up a listener to handle probe responses.
+                client.probeListener();
                 while (true) {
                     discoverHosts();
                     try {
@@ -162,32 +167,41 @@ public class Chess extends Scene {
                         e.printStackTrace();
                     }
                 }
-            }).start();
+            });
+            discoveryThread.start();
         }
 
-        List<InetAddress> hosts_addresses;
+        private List<InetAddress> addressList;
         private void discoverHosts () {
             System.out.println("[CLIENT] Discovering hosts...");
-            // client.join("Not The Server's Client", "127.0.0.1");
-            hosts_addresses = client.kryo().discoverHosts(54777, 5000);
+            addressList = client.kryo().discoverHosts(54777, 5000);
 
-            for (InetAddress host : hosts_addresses) {
-                client.probe(host.getHostAddress());
+            for (InetAddress ip : addressList) {
+                client.probe(ip.getHostAddress());
             }
+
+            if (client.getGameHosts() != null && client.getGameHosts().size() > 0) {
+                for (GameHost h : client.getGameHosts()) {
+                    System.out.println("[CLIENT] Host: " + h.gameID + " at " + h.addressList.size() + " IP addresses.");
+                }
+            } else {
+                availableText.change("No games available.");
+            }
+            
         }
 
         private void displayHosts () {
-            if (hosts_addresses == null) {
+            if (addressList == null) {
                 availableText.change("No games available.");
             } else {
-                // map each host in the list to a button in the buttons list. 
+                // map each host in the list to a button in the buttons list.
 
                 int hostIndex = 0;
-                for (InetAddress host : hosts_addresses) {
+                for (InetAddress ip : addressList) {
                     if (hostIndex >= hosts.size()) {
-                        hosts.add(new Button(host.getHostAddress(), black, offWhite, new Frame(300, 50 + (hostIndex * 75), 200, 70)));
+                        hosts.add(new Button(ip.getHostAddress(), black, offWhite, new Frame(300, 70 + (hostIndex * 75), 200, 70)));
                     } else {
-                        hosts.get(hostIndex).setText(host.getHostAddress());
+                        hosts.get(hostIndex).setText(ip.getHostAddress());
                     }
                     hostIndex++;
                 }

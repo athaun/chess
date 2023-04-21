@@ -9,6 +9,7 @@ public class KryoRegister {
         kryo.register(KryoRequest.class);
         kryo.register(KryoResponse.class);
         kryo.register(KryoProbe.class);
+        kryo.register(KryoProbeResponse.class);
     }
 
     public static void register (Client client) {

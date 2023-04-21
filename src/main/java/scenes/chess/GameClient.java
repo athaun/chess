@@ -1,10 +1,16 @@
 package scenes.chess;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 import network.KryoProbe;
+import network.KryoProbeResponse;
 import network.KryoRegister;
 import network.KryoRequest;
 
@@ -33,6 +39,42 @@ public class GameClient {
         request.text = "Request sent from " + name + " on join!";
         
         client.sendTCP(request);
+    }
+
+    public class GameHost {
+        public int gameID;
+        public List<InetAddress> addressList;
+    }
+
+    private List<GameHost> gameHosts = new ArrayList<>();
+    public void probeListener () {
+        client.addListener(new Listener() {
+            public void received (Connection connection, Object req) {
+                if (req instanceof KryoProbeResponse) {
+                    KryoProbeResponse response = (KryoProbeResponse) req;
+                    System.out.println("Response with game ID: " + response.gameID);
+
+                    // Only save a single IP for games with the same gameID
+                    if (gameHosts.stream().noneMatch(gameHost -> gameHost.gameID == response.gameID)) {
+                        GameHost gameHost = new GameHost();
+                        gameHost.gameID = response.gameID;
+                        gameHost.addressList = new ArrayList<>();
+                        gameHost.addressList.add(connection.getRemoteAddressTCP().getAddress());
+                        gameHosts.add(gameHost);
+                    }
+                    for (GameHost gameHost : gameHosts) {
+                        if (gameHost.gameID == response.gameID) {
+                            gameHost.addressList.add(connection.getRemoteAddressTCP().getAddress());
+                            return;
+                        }
+                    }                    
+                }
+            }
+        });
+    }
+
+    public List<GameHost> getGameHosts () {
+        return gameHosts;
     }
 
     public void probe (String ip) {
