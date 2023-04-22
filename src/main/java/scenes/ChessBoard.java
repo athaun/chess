@@ -68,20 +68,32 @@ class ChessBoard extends Chess {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 board[y][x].update();
-                if(board[y][x].isPieceClicked() && currentSelectedTile == null) {
-                    currentSelectedTile = board[y][x];
-                    System.out.println(board[y][x].getPiece().getColor() + " " + board[y][x].getPiece().getType() + " has been selected to move!");
-                }
-                else if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
-                    System.out.println(board[y][x].getPiece().getColor() + " " + board[y][x].getPiece().getType() + " has been moved to new location!");
+
+                if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
+                    // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
+                    System.out.println("Board " + x + ", " + y + " has been moved to new location!");
                     futureSelectedTile = board[y][x];
+
+                    // Move the piece to the new tile
                     futureSelectedTile.setPiece(currentSelectedTile.getPiece());
                     currentSelectedTile.setPiece(null);
+
+                    // Reset the currently selected tile and the future selected tile
                     currentSelectedTile.setIsPieceClicked(false);
                     futureSelectedTile.setIsPieceClicked(false);
+
+                    // Reset the currently selected tile and the future selected tile
                     currentSelectedTile = null;
                     futureSelectedTile = null;
+                }              
+                
+                if(board[y][x].isPieceClicked() && currentSelectedTile == null) {
+                    // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
+                    currentSelectedTile = board[y][x];
+                    System.out.println("Board " + x + ", " + y + " has been selected to move!");
                 }
+
+                board[y][x].setIsPieceClicked(false);                
             }
         }
     }

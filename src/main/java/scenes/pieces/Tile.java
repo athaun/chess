@@ -93,13 +93,7 @@ public class Tile {
     }
 
     public void update() {
-        if (checkClick()) {
-            System.out.println("Clicked on tile " + x + ", " + y);
-            if(!isPieceClicked && piece != null) {
-                isPieceClicked = true;
-                return;
-            }
-        }
+        checkClick();
     }
 
     private boolean pMouseDown = false;
@@ -115,6 +109,7 @@ public class Tile {
 
             if (Mouse.mouseButtonDown(0) && !pMouseDown) {
                 // Left mouse button is pressed
+                isPieceClicked = true;
                 pMouseDown = true;
                 return true;
             } else if (!Mouse.mouseButtonDown(0) && pMouseDown) {
