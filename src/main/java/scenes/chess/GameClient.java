@@ -24,13 +24,14 @@ public class GameClient {
         client.start();
     }
 
-    public void join(String name, String ip) {
+    public boolean join(String name, String ip) {
         this.name = name;
 
         try {
             client.connect(5000, ip, 54553, 54777);
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
 
         KryoRegister.register(client);
@@ -39,35 +40,57 @@ public class GameClient {
         request.text = "Request sent from " + name + " on join!";
         
         client.sendTCP(request);
+
+        return true;
     }
 
     public class GameHost {
         public int gameID;
-        public List<InetAddress> addressList;
+        public InetAddress address;
+
+        public GameHost (InetAddress address) {
+            this.address = address;
+        }
+
+        public GameHost (InetAddress address, int id) {
+            this.address = address;
+            this.gameID = id;
+        }
     }
 
     private List<GameHost> gameHosts = new ArrayList<>();
+    private List<GameHost> inactiveHosts = new ArrayList<>();
+
+    public void addInactiveHost (InetAddress address) {
+        inactiveHosts.add(new GameHost(address));
+    }
     public void probeListener () {
         client.addListener(new Listener() {
             public void received (Connection connection, Object req) {
                 if (req instanceof KryoProbeResponse) {
                     KryoProbeResponse response = (KryoProbeResponse) req;
-                    System.out.println("Response with game ID: " + response.gameID);
+                    System.out.println("[CLIENT] Probe response with game ID: " + response.gameID);
 
                     // Only save a single IP for games with the same gameID
                     if (gameHosts.stream().noneMatch(gameHost -> gameHost.gameID == response.gameID)) {
-                        GameHost gameHost = new GameHost();
-                        gameHost.gameID = response.gameID;
-                        gameHost.addressList = new ArrayList<>();
-                        gameHost.addressList.add(connection.getRemoteAddressTCP().getAddress());
+                        GameHost gameHost = new GameHost(connection.getRemoteAddressTCP().getAddress(), response.gameID);
                         gameHosts.add(gameHost);
+                    } else {
+                        gameHosts.stream().filter(gameHost -> gameHost.gameID == response.gameID).forEach(gameHost -> {
+                            // Update the IP address if it has changed
+                            gameHost.address = connection.getRemoteAddressTCP().getAddress();
+                        });
+                    }      
+                                 
+                    // remove the host is inactive
+                    if (inactiveHosts.stream().anyMatch(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress())) {
+                        // TODO @Asher: make this work later
+                        inactiveHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
+                        gameHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
                     }
-                    for (GameHost gameHost : gameHosts) {
-                        if (gameHost.gameID == response.gameID) {
-                            gameHost.addressList.add(connection.getRemoteAddressTCP().getAddress());
-                            return;
-                        }
-                    }                    
+                    
+                } else {
+                    System.out.println("[CLIENT] Probe response with invalid game ID: " + Object.class);
                 }
             }
         });
@@ -77,11 +100,12 @@ public class GameClient {
         return gameHosts;
     }
 
-    public void probe (String ip) {
+    public boolean probe (String ip) {
         try {
             client.connect(5000, ip, 54553, 54777);
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
 
         KryoRegister.register(client);
@@ -89,6 +113,8 @@ public class GameClient {
         KryoProbe request = new KryoProbe();
         
         client.sendTCP(request);
+
+        return true;
     }
 
     int i = 0;

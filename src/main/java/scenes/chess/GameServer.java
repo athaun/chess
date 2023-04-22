@@ -61,7 +61,7 @@ public class GameServer {
                     response.gameID = gameID;
                     response.open = true;
 
-                    System.out.println("Responding with ID: " + response.gameID);
+                    System.out.println("[SERVER] Responding to probe with ID: " + response.gameID);
 
                     connection.sendTCP(response);
                 }

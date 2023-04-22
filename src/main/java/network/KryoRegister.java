@@ -8,8 +8,13 @@ public class KryoRegister {
     private static void registerWithKryo (Kryo kryo) {
         kryo.register(KryoRequest.class);
         kryo.register(KryoResponse.class);
+
+        // Probes
         kryo.register(KryoProbe.class);
         kryo.register(KryoProbeResponse.class);
+
+        // General Messages
+        kryo.register(KryoMessage.class);
     }
 
     public static void register (Client client) {
