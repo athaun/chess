@@ -39,7 +39,7 @@ class ChessBoard extends Chess {
             }
         }    
         
-        info = new Text(ipText, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), offWhite, 10, 10);
+        info = new Text(ipText, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 10, 10);
     }
 
     public void update () {
@@ -52,14 +52,6 @@ class ChessBoard extends Chess {
         if(Keyboard.getKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
             System.out.println("Client shutting down!");
             System.exit(0);
-        }
-
-        if (server != null) {
-            String s = "";
-            for (String i : server.messages) {
-                s = i;
-            }
-            info.change(s);
         }
 
         for (int x = 0; x < 8; x++) {
