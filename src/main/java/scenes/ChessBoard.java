@@ -15,6 +15,8 @@ import org.lwjgl.glfw.GLFW;
 class ChessBoard extends Chess {
 
     Tile[][] board = new Tile[8][8];
+    Tile currentSelectedTile = null;
+    Tile futureSelectedTile = null;
 
     Text info;
     Text turn;
@@ -72,6 +74,39 @@ class ChessBoard extends Chess {
                     board[x][y].update();
                 }
             }
-        }        
+        }
+
+        //board is displayed with y rows first then x columns
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                board[y][x].update();
+
+                if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
+                    // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
+                    System.out.println("Board " + x + ", " + y + " has been moved to new location!");
+                    futureSelectedTile = board[y][x];
+
+                    // Move the piece to the new tile
+                    futureSelectedTile.setPiece(currentSelectedTile.getPiece());
+                    currentSelectedTile.setPiece(null);
+
+                    // Reset the currently selected tile and the future selected tile
+                    currentSelectedTile.setIsPieceClicked(false);
+                    futureSelectedTile.setIsPieceClicked(false);
+
+                    // Reset the currently selected tile and the future selected tile
+                    currentSelectedTile = null;
+                    futureSelectedTile = null;
+                }              
+                
+                if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
+                    // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
+                    currentSelectedTile = board[y][x];
+                    System.out.println("Board " + x + ", " + y + " has been selected to move!");
+                }
+
+                board[y][x].setIsPieceClicked(false);                
+            }
+        }
     }
 }

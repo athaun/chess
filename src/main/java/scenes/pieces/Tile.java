@@ -30,6 +30,7 @@ public class Tile {
     private Piece piece;
 
     private boolean light = false;
+    private boolean isPieceClicked = false;
 
     private Color black = new Color(193, 114, 86);
     private Color blackHovered = new Color(170, 104, 76);
@@ -73,6 +74,9 @@ public class Tile {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        if (piece != null) {
+            this.piece.calculateSprite(x, y, size);
+        }
     }
 
     public boolean isOccupied() {
@@ -83,10 +87,16 @@ public class Tile {
         return isOccupied() && piece.getColor() == color;
     }
 
+    public boolean isPieceClicked() {
+        return isPieceClicked;
+    }
+
+    public void setIsPieceClicked(boolean isPieceClicked) {
+        this.isPieceClicked = isPieceClicked;
+    }
+
     public void update() {
-        if (checkClick()) {
-            System.out.println("Clicked on tile " + x + ", " + y);
-        }
+        checkClick();
     }
 
     private boolean pMouseDown = false;
@@ -102,6 +112,7 @@ public class Tile {
 
             if (Mouse.mouseButtonDown(0) && !pMouseDown) {
                 // Left mouse button is pressed
+                isPieceClicked = true;
                 pMouseDown = true;
                 return true;
             } else if (!Mouse.mouseButtonDown(0) && pMouseDown) {
