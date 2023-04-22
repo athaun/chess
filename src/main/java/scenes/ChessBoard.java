@@ -20,6 +20,8 @@ class ChessBoard extends Chess {
     Text turn;
 
     String ipText = "IP: " + GameServer.getIp();
+
+    boolean isServer = false;
     
     public void awake() {
         camera = new Camera();
@@ -29,22 +31,32 @@ class ChessBoard extends Chess {
 
         int tileSize = Window.getHeight() / 9;
 
-        // Create the board
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                // Alternate the color of the tiles
-                PieceColor color = (x + y) % 2 == 0 ? PieceColor.WHITE : PieceColor.BLACK;
-                // Create the tile
-                board[x][y] = new Tile(x, y, tileSize, color);
-            }
-        }    
-        
         info = new Text(ipText, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 10, 10);
+
+        isServer = server != null;
+
+        if (isServer) {
+            ipText = ipText + " as server.";
+        } else {
+            ipText = ipText + " as client.";
+        }
+        info.change(ipText);
+
+        if (isServer) {
+            // Create the board
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    // Alternate the color of the tiles
+                    PieceColor color = (x + y) % 2 == 0 ? PieceColor.WHITE : PieceColor.BLACK;
+                    // Create the tile
+                    board[x][y] = new Tile(x, y, tileSize, color);
+                }
+            }
+        }
     }
 
     public void update () {
         if (Keyboard.getKeyDown(GLFW.GLFW_KEY_SPACE)) {
-            client.send_i();
             System.out.println("Client sending!");
         }
 
@@ -54,10 +66,12 @@ class ChessBoard extends Chess {
             System.exit(0);
         }
 
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                board[x][y].update();
+        if (isServer) {
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    board[x][y].update();
+                }
             }
-        }
+        }        
     }
 }

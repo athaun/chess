@@ -9,10 +9,11 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import network.KryoProbe;
-import network.KryoProbeResponse;
 import network.KryoRegister;
-import network.KryoRequest;
+import network.requests.JoinRequest;
+import network.requests.KryoRequest;
+import network.requests.Probe;
+import network.responses.ProbeResponse;
 
 public class GameClient {
 
@@ -36,8 +37,8 @@ public class GameClient {
 
         KryoRegister.register(client);
         
-        KryoRequest request = new KryoRequest();
-        request.text = "Request sent from " + name + " on join!";
+        JoinRequest request = new JoinRequest();
+        request.name = name;
         
         client.sendTCP(request);
 
@@ -67,8 +68,8 @@ public class GameClient {
     public void probeListener () {
         client.addListener(new Listener() {
             public void received (Connection connection, Object req) {
-                if (req instanceof KryoProbeResponse) {
-                    KryoProbeResponse response = (KryoProbeResponse) req;
+                if (req instanceof ProbeResponse) {
+                    ProbeResponse response = (ProbeResponse) req;
                     System.out.println("[CLIENT] Probe response with game ID: " + response.gameID);
 
                     // Only save a single IP for games with the same gameID
@@ -110,20 +111,11 @@ public class GameClient {
 
         KryoRegister.register(client);
         
-        KryoProbe request = new KryoProbe();
+        Probe request = new Probe();
         
         client.sendTCP(request);
 
         return true;
-    }
-
-    int i = 0;
-    public void send_i() {
-        i ++;
-        KryoRequest request = new KryoRequest();
-        request.text = "Request from " + name + " | " + i;
-        
-        client.sendTCP(request);
     }
 
     public void stop() {
