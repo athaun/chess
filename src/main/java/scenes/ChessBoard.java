@@ -87,7 +87,7 @@ class ChessBoard extends Chess {
                     futureSelectedTile = null;
                 }              
                 
-                if(board[y][x].isPieceClicked() && currentSelectedTile == null) {
+                if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
                     // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
                     currentSelectedTile = board[y][x];
                     System.out.println("Board " + x + ", " + y + " has been selected to move!");

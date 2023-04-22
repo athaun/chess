@@ -37,8 +37,13 @@ public class Piece {
 
     public void calculateSprite (int x, int y, int tileSize) {
         float scalar = (float)(graphics.Window.getWidth() / (tileSize * 1.9));
-        this.gameObject = new GameObject(this.color == PieceColor.WHITE ? "White " : "Black " + this.type.toString(), new Vector2f(x * tileSize + scalar * 4, y * tileSize + tileSize / 3), 100);
 
+        if (this.gameObject != null) {
+            Engine.scenes().currentScene().removeGameObjectFromScene(this.gameObject);
+        }
+        
+        this.gameObject = new GameObject(this.color == PieceColor.WHITE ? "White " : "Black " + this.type.toString(), new Vector2f(x * tileSize + scalar * 4, y * tileSize + tileSize / 3), 100);
+        
         SpriteRenderer spriteRenderer = null;
         int spriteIndex = 0;
 
