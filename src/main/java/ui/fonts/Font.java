@@ -34,16 +34,21 @@ public class Font {
     /**
      * Contains the glyphs for each char.
      */
-    private final Map<Character, Glyph> glyphs;
+    private Map<Character, Glyph> glyphs;
     /**
      * Contains the font texture.
      */
-    private final Texture texture;
+    private Texture texture;
 
     /**
      * Height of the font.
      */
     private int fontHeight;
+
+    private boolean antiAlias;
+    private float size;
+    private String path;
+    private java.awt.Font javaFont;
 
     /**
      * Creates a default anti-aliased font with monospaced glyphs and default
@@ -117,6 +122,10 @@ public class Font {
      * @param antiAlias Whether the font should be anti-aliased or not
      */
     public Font(String path, float size, boolean antiAlias) {
+        this.size = size;
+        this.path = path;
+        this.antiAlias = antiAlias;
+
         java.awt.Font f = null;
         try {
             java.awt.Font fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File(path));
@@ -125,6 +134,8 @@ public class Font {
             Log.warn("could not load font " + path + ", using default monospaced font.", 1);
             e.printStackTrace();
         }
+
+        this.javaFont = f;
 
         glyphs = new HashMap<>();
         texture = createFontTexture(f, antiAlias);
@@ -148,6 +159,10 @@ public class Font {
     public Font(java.awt.Font font, boolean antiAlias) {
         glyphs = new HashMap<>();
         texture = createFontTexture(font, antiAlias);
+    }
+
+    public Font changeSize (float size) {
+        return new Font(path, size, antiAlias);
     }
 
     /**
