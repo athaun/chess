@@ -15,8 +15,6 @@ import org.lwjgl.glfw.GLFW;
 class ChessBoard extends Chess {
 
     Tile[][] board = new Tile[8][8];
-    Tile currentSelectedTile = null;
-    Tile futureSelectedTile = null;
 
     Text info;
     Text turn;
@@ -64,24 +62,9 @@ class ChessBoard extends Chess {
             info.change(s);
         }
 
-        //board is displayed with y rows first then x columns
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                board[y][x].update();
-                if(board[y][x].isPieceClicked() && currentSelectedTile == null) {
-                    currentSelectedTile = board[y][x];
-                    System.out.println(board[y][x].getPiece().getColor() + " " + board[y][x].getPiece().getType() + " has been selected to move!");
-                }
-                else if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
-                    System.out.println(board[y][x].getPiece().getColor() + " " + board[y][x].getPiece().getType() + " has been moved to new location!");
-                    futureSelectedTile = board[y][x];
-                    futureSelectedTile.setPiece(currentSelectedTile.getPiece());
-                    currentSelectedTile.setPiece(null);
-                    currentSelectedTile.setIsPieceClicked(false);
-                    futureSelectedTile.setIsPieceClicked(false);
-                    currentSelectedTile = null;
-                    futureSelectedTile = null;
-                }
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                board[x][y].update();
             }
         }
     }
