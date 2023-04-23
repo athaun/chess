@@ -6,8 +6,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.esotericsoftware.minlog.Log;
-
+import util.Log;
 import graphics.Camera;
 import graphics.Window;
 import input.Keyboard;
@@ -65,11 +64,24 @@ class joinGame extends Chess {
         ipField = new TextField("127.0.0.1", new Frame(250, 75, 200, 70));
         joinButton = new Button("JOIN", PRIMARY_DARK, PRIMARY_LIGHT, new Frame(455, 75, 95, 70));
         joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
-            if (client.join("Client :O", ipField.getText().strip())) {
-                Engine.scenes().switchScene(new ChessBoard());
-                discoveryThread.stop(); // TODO: (if time) This method is deprecated, look into alternative ways of doing this
-            } else {
-                Log.debug(" Failed to join game.");
+            try {
+                Engine.scenes().switchScene(new ChessBoard().defer(() -> {
+                    if (client.join("Client :O", ipField.getText().strip())) {
+                        // If the join was successful, switch to the chess board scene.
+                        // Stop the discovery thread.
+                        discoveryThread.stop();
+                    } else {
+                        // If the join was unsuccessful, restart the discovery thread.
+                        Log.warn("CLIENT - Failed to join game.");
+                        discoveryThread.start();
+                        Engine.scenes().switchScene(new joinGame());
+                    }
+                    // Rewrite as a try catch
+                }));
+            } catch (Exception e1) {
+                // If the join was unsuccessful, go back to the join scene. 
+                // Trying to enter the game will cause it to crash since there is no server.
+                Engine.scenes().switchScene(new joinGame());
             }
         });        
         
@@ -81,15 +93,15 @@ class joinGame extends Chess {
      * Discover games hosted on the local network by sending probes to all and listening for game IDs.
      */
     private void discoverHosts () {
-        Log.debug(" Discovering hosts...");
+        Log.debug("CLIENT - Discovering hosts...");
         addressList = client.kryo().discoverHosts(54777, 5000);
 
         for (InetAddress ip : addressList) {
-            Log.debug(" Probing " + ip.getHostAddress());
+            Log.debug("CLIENT - Probing " + ip.getHostAddress());
             if (client.probe(ip.getHostAddress())) {
-                Log.debug(" Found game at " + ip.getHostAddress());
+                Log.debug("CLIENT - Found game at " + ip.getHostAddress());
             } else {
-                Log.debug(" No game found at " + ip.getHostAddress());
+                Log.debug("CLIENT - No game found at " + ip.getHostAddress());
             }
         }            
     }
@@ -113,20 +125,26 @@ class joinGame extends Chess {
                     
                     // Register a listener for the button that will attempt to join the game.
                     hosts.get(hostIndex).getEventHandler().registerListener(Event.MOUSE_CLICK, e -> {
-                        Log.debug(" Attempting to join " + h.gameID + " at " + h.address.getHostAddress());
+                        Log.debug("CLIENT - Attempting to join " + h.gameID + " at " + h.address.getHostAddress());
 
-                        Engine.scenes().switchScene(new ChessBoard().defer(() -> {
-                            if (client.join("Client :O", h.address.getHostAddress())) {
-                                // If the join was successful, switch to the chess board scene.
-                                // Stop the discovery thread.
-                                discoveryThread.stop();
-                            } else {
-                                // If the join was unsuccessful, restart the discovery thread.
-                                Log.warn(" Failed to join game.");
-                                discoveryThread.start();
-                                Engine.scenes().switchScene(new joinGame());
-                            }
-                        }));
+                        try {
+                            Engine.scenes().switchScene(new ChessBoard().defer(() -> {
+                                if (client.join("Client :O", h.address.getHostAddress())) {
+                                    // If the join was successful, switch to the chess board scene.
+                                    // Stop the discovery thread.
+                                    discoveryThread.stop();
+                                } else {
+                                    // If the join was unsuccessful, restart the discovery thread.
+                                    Log.warn("CLIENT - Failed to join game.");
+                                    discoveryThread.start();
+                                    Engine.scenes().switchScene(new joinGame());
+                                }
+                            }));
+                        } catch (Exception e1) {
+                            // If the join was unsuccessful, go back to the join scene. 
+                            // Trying to enter the game will cause it to crash since there is no server.
+                            Engine.scenes().switchScene(new joinGame());
+                        }
                     });
                 }                
                 // This does not clean up old hosts that are no longer available due to a bug with the rendering system that doesn't allow too many Buttons in the same render context
