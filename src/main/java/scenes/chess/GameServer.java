@@ -16,7 +16,10 @@ import network.requests.KryoRequest;
 import network.requests.Probe;
 import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
+import scenes.ChessBoard;
 import scenes.pieces.NetData;
+import util.Engine;
+import util.Log;
 import util.MathUtils;
 
 import static scenes.ChessBoard.*;
@@ -43,7 +46,7 @@ public class GameServer {
         try {
             server.bind(54553, 54777);
         } catch (IOException e) {
-            System.out.println("[SERVER] Failed to bind to ports 54553 and/or 54777. Check to make sure they are not in use by another program or instance of this program.");
+            Log.info(" Failed to bind to ports 54553 and/or 54777. Check to make sure they are not in use by another program or instance of this program.");
             e.printStackTrace();
             System.exit(1);
         }
@@ -70,11 +73,18 @@ public class GameServer {
      * Adds a client to the server.
      */
     private void addClient (Connection connection, JoinRequest request) {
-        System.out.println("[SERVER] Client " + request.name + " has joined the server.");
+        Log.info(" Client " + request.name + " has joined the server.");
         messages.add(request.name + " has joined the server.");
 
         // Send the client the initial setup of the board.
-        NetData setup = new NetData(board, false);
+        NetData setup = new NetData(ChessBoard.board);
+        Log.info("Sending initial setup to client " + request.name + " with ID " + gameID);
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                System.out.print(" " + setup.board[x][y]);
+            }
+            System.out.println();
+        }
         connection.sendTCP(setup);
 
         // Add the client to the list of clients.
@@ -89,7 +99,7 @@ public class GameServer {
         response.gameID = gameID;
         response.open = true;
 
-        System.out.println("[SERVER] Responding to probe with ID: " + response.gameID);
+        Log.info(" Responding to probe with ID: " + response.gameID);
 
         connection.sendTCP(response);
     }

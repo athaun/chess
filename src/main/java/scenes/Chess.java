@@ -89,10 +89,10 @@ public class Chess extends Scene {
             server = new GameServer();
             server.start();
 
-            client = new GameClient();
-            client.join("Server's client", "127.0.0.1");
-
-            Engine.scenes().switchScene(new ChessBoard());
+            Engine.scenes().switchScene(new ChessBoard().defer(() -> {
+                client = new GameClient();
+                client.join("Server's client", "127.0.0.1");
+            }));
         });
     
         // Join button
@@ -121,31 +121,31 @@ public class Chess extends Scene {
     public void update() {
         // Host a game and join it
         if (Keyboard.getKeyDown(Keys.KEY_S) || Keyboard.getKeyDown(Keys.KEY_H)) {
-            System.out.println("[HOTKEY] S|H: Joining self-hosted game...");
+            Log.p(" S|H: Joining self-hosted game...");
 
             server = new GameServer();
             server.start();
 
-            client = new GameClient();
-            client.join("Server's client", "127.0.0.1");
-
-            Engine.scenes().switchScene(new ChessBoard());
+            Engine.scenes().switchScene(new ChessBoard().defer(() -> {
+                client = new GameClient();
+                client.join("Server's client", "127.0.0.1");
+            }));
         }
 
         // Go to the join screen
         if(Keyboard.getKeyDown(Keys.KEY_J) || Keyboard.getKeyDown(Keys.KEY_C)) {
-            System.out.println("[HOTKEY] J|C: Client Join screen");
+            Log.p(" J|C: Client Join screen");
             Engine.scenes().switchScene(new joinGame());
         }
 
         // Join Localhost game
         if (Keyboard.getKeyDown(Keys.KEY_L)) {
-            System.out.println("[HOTKEY] L: Joining localhost game...");
+            Log.p(" L: Joining localhost game...");
 
-            client = new GameClient();
-            if (client.join("Not The Server's Client", "127.0.0.1")) {
-                Engine.scenes().switchScene(new ChessBoard());
-            }
+            Engine.scenes().switchScene(new ChessBoard().defer(() -> {
+                client = new GameClient();
+                client.join("Server's client", "127.0.0.1");
+            }));
         }
 
         // Exit the game

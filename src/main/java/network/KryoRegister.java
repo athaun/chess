@@ -36,6 +36,8 @@ public class KryoRegister {
         kryo.register(JoinRequest.class);
         kryo.register(InitialSetup.class);
         kryo.register(NetData.class);
+        kryo.register(char[][].class);
+        kryo.register(char[].class);
         
     }
 

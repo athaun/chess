@@ -123,6 +123,38 @@ public class Piece {
         }
     }
 
+    public static Piece getPieceFromChar (char c, int x, int y) {
+        // Return a char that represents the type and color
+        switch (c) {
+            case 'P':
+                return new Piece(x, y, PieceType.PAWN, PieceColor.WHITE);
+            case 'R':
+                return new Piece(x, y, PieceType.ROOK, PieceColor.WHITE);
+            case 'N':
+                return new Piece(x, y, PieceType.KNIGHT, PieceColor.WHITE);
+            case 'B':
+                return new Piece(x, y, PieceType.BISHOP, PieceColor.WHITE);
+            case 'Q':
+                return new Piece(x, y, PieceType.QUEEN, PieceColor.WHITE);
+            case 'K':
+                return new Piece(x, y, PieceType.KING, PieceColor.WHITE);
+            case 'p':
+                return new Piece(x, y, PieceType.PAWN, PieceColor.BLACK);
+            case 'r':
+                return new Piece(x, y, PieceType.ROOK, PieceColor.BLACK);
+            case 'n':
+                return new Piece(x, y, PieceType.KNIGHT, PieceColor.BLACK);
+            case 'b':
+                return new Piece(x, y, PieceType.BISHOP, PieceColor.BLACK);
+            case 'q':
+                return new Piece(x, y, PieceType.QUEEN, PieceColor.BLACK);
+            case 'k':
+                return new Piece(x, y, PieceType.KING, PieceColor.BLACK);
+            default:
+                return null;
+        }
+    }
+
     public Vector2i getPosition() {
         return position;
     }

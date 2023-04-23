@@ -5,6 +5,7 @@ import org.joml.Vector2f;
 import ecs.GameObject;
 import ecs.SpriteRenderer;
 import graphics.Color;
+import graphics.Window;
 import input.Mouse;
 import scenes.pieces.Piece.PieceColor;
 import scenes.pieces.Piece.PieceType;
@@ -58,6 +59,42 @@ public class Tile {
             this.piece = startingLayout[y][x];
             this.piece.calculateSprite(x, y, size);
         }
+    }
+
+    public Tile (int x, int y, char piece) {
+        this.x = x;
+        this.y = y;
+        this.size = Window.getHeight() / 9;
+
+        this.renderX = x * size;
+        this.renderY = y * size + size;
+
+        this.light = (x + y) % 2 == 0;
+
+        this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
+        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
+        this.gameObject.addComponent(spriteRenderer);
+
+        if (piece != ' ') {
+            this.piece = Piece.getPieceFromChar(piece, x, y);
+            this.piece.calculateSprite(x, y, size);
+        }
+    }
+
+    // Make a new empty tile
+    public Tile (int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.size = Window.getHeight() / 9;
+
+        this.renderX = x * size;
+        this.renderY = y * size + size;
+
+        this.light = (x + y) % 2 == 0;
+
+        this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
+        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
+        this.gameObject.addComponent(spriteRenderer);
     }
 
     public int getX() {

@@ -3,6 +3,7 @@ package scenes;
 import graphics.Camera;
 import graphics.Window;
 import input.Keyboard;
+import scenes.chess.GameClient;
 import scenes.chess.GameServer;
 import scenes.pieces.Piece;
 import scenes.pieces.Tile;
@@ -11,6 +12,7 @@ import ui.Text;
 import ui.fonts.Font;
 import static graphics.Graphics.setDefaultBackground;
 import org.lwjgl.glfw.GLFW;
+import util.Log;
 
 public class ChessBoard extends Chess {
 
@@ -29,9 +31,9 @@ public class ChessBoard extends Chess {
         camera = new Camera();
         setDefaultBackground(100, 100, 100);
 
-        Piece.loadSprites("src/assets/images/pack.png");
+        Log.setLogLevel(Log.ALL);
 
-        int tileSize = Window.getHeight() / 9;
+        Piece.loadSprites("src/assets/images/pack.png");
 
         info = new Text(ipText, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 10, 10);
 
@@ -45,16 +47,27 @@ public class ChessBoard extends Chess {
         info.change(ipText);
 
         if (isServer) {
-            // Create the board
-            for (int x = 0; x < 8; x++) {
-                for (int y = 0; y < 8; y++) {
-                    // Alternate the color of the tiles
-                    PieceColor color = (x + y) % 2 == 0 ? PieceColor.WHITE : PieceColor.BLACK;
-                    // Create the tile
-                    board[x][y] = new Tile(x, y, tileSize, color);
-                }
+            board = createBoard();
+            System.out.println("[] Board created!");
+        }
+    }
+
+    public Tile[][] createBoard () {
+        Tile[][] board = new Tile[8][8];
+
+        int tileSize = Window.getHeight() / 9;
+
+        // Create the board
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                // Alternate the color of the tiles
+                PieceColor color = (x + y) % 2 == 0 ? PieceColor.WHITE : PieceColor.BLACK;
+                // Create the tile
+                board[x][y] = new Tile(x, y, tileSize, color);
             }
         }
+
+        return board;
     }
 
     public void update () {

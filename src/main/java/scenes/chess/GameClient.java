@@ -15,6 +15,9 @@ import network.requests.Probe;
 import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
 import scenes.ChessBoard;
+import scenes.pieces.NetData;
+import scenes.pieces.Tile;
+import util.Log;
 
 public class GameClient {
 
@@ -46,10 +49,20 @@ public class GameClient {
         client.addListener(new Listener() {
             public void received (Connection connection, Object req) {
                 if (req instanceof InitialSetup) {
-                    InitialSetup response = (InitialSetup) req;
-                    System.out.println("[CLIENT] Initial setup received.");
-                    ChessBoard.board = response.board;
-                    
+                    NetData data = (NetData) req;
+                    Log.debug(" Initial setup received.");
+
+                    Tile[][] newBoard = new Tile[8][8];
+                    for (int x = 0; x < 8; x++) {
+                        for (int y = 0; y < 8; y++) {
+                            if (data.board[x][y] == ' ') {
+                                newBoard[x][y] = new Tile(x, y);
+                            } else {
+                                newBoard[x][y] = new Tile(x, y, data.board[x][y]);
+                            }
+                        }
+                    }
+                    ChessBoard.board = newBoard;                    
                 }
             }
         });
@@ -82,7 +95,7 @@ public class GameClient {
             public void received (Connection connection, Object req) {
                 if (req instanceof ProbeResponse) {
                     ProbeResponse response = (ProbeResponse) req;
-                    System.out.println("[CLIENT] Probe response with game ID: " + response.gameID);
+                    Log.debug(" Probe response with game ID: " + response.gameID);
 
                     // Only save a single IP for games with the same gameID
                     if (gameHosts.stream().noneMatch(gameHost -> gameHost.gameID == response.gameID)) {
@@ -103,7 +116,7 @@ public class GameClient {
                     }
                     
                 } else {
-                    System.out.println("[CLIENT] Probe response with invalid game ID: " + Object.class);
+                    Log.debug(" Probe response with invalid game ID: " + Object.class);
                 }
             }
         });
