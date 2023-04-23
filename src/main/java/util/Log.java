@@ -243,7 +243,7 @@ public class Log {
      */
     public static void p(String text) {
         StackTraceElement source = source();
-        String line = "[MANTEST] {" + source + "} " + text;
+        String line = "[PRINT] {" + source + "} " + text;
         println(-1, CL_PURPLE + line);
     }
 
@@ -259,7 +259,7 @@ public class Log {
     public static void p(String text, int stepUp) {
         StackTraceElement source = source(stepUp);
         StackTraceElement source2 = source();
-        String line = "[MANTEST] {" + source + " -> " + source2 + "} " + text;
+        String line = "[PRINT] {" + source + " -> " + source2 + "} " + text;
         println(-1, CL_PURPLE + line);
     }
 
