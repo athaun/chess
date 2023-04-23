@@ -143,9 +143,9 @@ public class Chess extends Scene {
             System.out.println("[HOTKEY] L: Joining localhost game...");
 
             client = new GameClient();
-            client.join("Not The Server's Client", "127.0.0.1");
-            
-            Engine.scenes().switchScene(new ChessBoard());
+            if (client.join("Not The Server's Client", "127.0.0.1")) {
+                Engine.scenes().switchScene(new ChessBoard());
+            }
         }
 
         // Exit the game

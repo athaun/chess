@@ -12,9 +12,9 @@ import ui.fonts.Font;
 import static graphics.Graphics.setDefaultBackground;
 import org.lwjgl.glfw.GLFW;
 
-class ChessBoard extends Chess {
+public class ChessBoard extends Chess {
 
-    Tile[][] board = new Tile[8][8];
+    public static Tile[][] board = new Tile[8][8];
     Tile currentSelectedTile = null;
     Tile futureSelectedTile = null;
 
@@ -97,7 +97,7 @@ class ChessBoard extends Chess {
                     // Reset the currently selected tile and the future selected tile
                     currentSelectedTile = null;
                     futureSelectedTile = null;
-                }              
+                }
                 
                 if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
                     // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked

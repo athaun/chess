@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -13,12 +14,19 @@ import network.KryoRegister;
 import network.requests.JoinRequest;
 import network.requests.KryoRequest;
 import network.requests.Probe;
+import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
+import scenes.pieces.NetData;
 import util.MathUtils;
+
+import static scenes.ChessBoard.*;
 
 public class GameServer {
 
     Server server = new Server();
+
+    private List<Connection> clients = new ArrayList<Connection>();
+
     public ArrayList<String> messages = new ArrayList<String>();
 
     private static int gameID = 0;
@@ -54,9 +62,8 @@ public class GameServer {
                 if (req instanceof JoinRequest) {
                     addClient(connection, (JoinRequest) req);
                 }
-
             }
-        });        
+        });  
     }
 
     /*
@@ -66,7 +73,12 @@ public class GameServer {
         System.out.println("[SERVER] Client " + request.name + " has joined the server.");
         messages.add(request.name + " has joined the server.");
 
+        // Send the client the initial setup of the board.
+        NetData setup = new NetData(board, false);
+        connection.sendTCP(setup);
 
+        // Add the client to the list of clients.
+        clients.add(connection);
     }
 
     /*

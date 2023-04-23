@@ -11,9 +11,10 @@ import com.esotericsoftware.kryonet.Listener;
 
 import network.KryoRegister;
 import network.requests.JoinRequest;
-import network.requests.KryoRequest;
 import network.requests.Probe;
+import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
+import scenes.ChessBoard;
 
 public class GameClient {
 
@@ -29,7 +30,7 @@ public class GameClient {
         this.name = name;
 
         try {
-            client.connect(5000, ip, 54553, 54777);
+            client.connect(10 * 1000, ip, 54553, 54777);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -41,6 +42,17 @@ public class GameClient {
         request.name = name;
         
         client.sendTCP(request);
+
+        client.addListener(new Listener() {
+            public void received (Connection connection, Object req) {
+                if (req instanceof InitialSetup) {
+                    InitialSetup response = (InitialSetup) req;
+                    System.out.println("[CLIENT] Initial setup received.");
+                    ChessBoard.board = response.board;
+                    
+                }
+            }
+        });
 
         return true;
     }

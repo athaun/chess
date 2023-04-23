@@ -100,6 +100,29 @@ public class Piece {
         this.gameObject.addComponent(spriteRenderer);
     }
 
+    /*
+     * Returns a char that represents the type and color of the piece to be sent over the network in the NetData class 
+     */
+    public char getCharFromType () {
+        // Return a char that represents the type and color
+        switch (type) {
+            case PAWN:
+                return color == PieceColor.WHITE ? 'P' : 'p';
+            case ROOK:
+                return color == PieceColor.WHITE ? 'R' : 'r';
+            case KNIGHT:
+                return color == PieceColor.WHITE ? 'N' : 'n';
+            case BISHOP:
+                return color == PieceColor.WHITE ? 'B' : 'b';
+            case QUEEN:
+                return color == PieceColor.WHITE ? 'Q' : 'q';
+            case KING:
+                return color == PieceColor.WHITE ? 'K' : 'k';
+            default:
+                return ' ';
+        }
+    }
+
     public Vector2i getPosition() {
         return position;
     }

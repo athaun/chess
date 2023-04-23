@@ -55,7 +55,7 @@ class joinGame extends Chess {
         camera = new Camera();
         setDefaultBackground(30, 30, 30);
 
-        availableText = new Text("Available Games:", new Font("src/assets/fonts/AnimeAce.tipField", 20, true), PRIMARY_LIGHT, Window.getWidth() / 2, 20, 1, true, true);
+        availableText = new Text("Available Games:", new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, Window.getWidth() / 2, 20, 1, true, true);
 
         client = new GameClient();
 

@@ -13,4 +13,8 @@ public class InitialSetup extends KryoResponse {
     public InitialSetup(Tile[][] board, boolean isClientObserver) {
         this.board = board;
     }
+
+    public InitialSetup () {
+        
+    }
 }
