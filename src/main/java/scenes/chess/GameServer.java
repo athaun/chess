@@ -46,7 +46,7 @@ public class GameServer {
         try {
             server.bind(54553, 54777);
         } catch (IOException e) {
-            Log.info(" Failed to bind to ports 54553 and/or 54777. Check to make sure they are not in use by another program or instance of this program.");
+            Log.info("SERVER - Failed to bind to ports 54553 and/or 54777. Check to make sure they are not in use by another program or instance of this program.");
             e.printStackTrace();
             System.exit(1);
         }
@@ -73,12 +73,12 @@ public class GameServer {
      * Adds a client to the server.
      */
     private void addClient (Connection connection, JoinRequest request) {
-        Log.info(" Client " + request.name + " has joined the server.");
+        Log.info("SERVER - Client " + request.name + " has joined the server.");
         messages.add(request.name + " has joined the server.");
 
         // Send the client the initial setup of the board.
         NetData setup = new NetData(ChessBoard.board);
-        Log.info("Sending initial setup to client " + request.name + " with ID " + gameID);
+        Log.info("SERVER - Sending initial setup to client " + request.name + " with ID " + gameID);
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 System.out.print(" " + setup.board[x][y]);
@@ -99,7 +99,7 @@ public class GameServer {
         response.gameID = gameID;
         response.open = true;
 
-        Log.info(" Responding to probe with ID: " + response.gameID);
+        Log.info("SERVER - Responding to probe with ID: " + response.gameID);
 
         connection.sendTCP(response);
     }
@@ -115,6 +115,7 @@ public class GameServer {
             socket.close();
             return ip;
         } catch (IOException e) {
+            Log.warn("Error finding IP address.");
             e.printStackTrace();
             return "Error Finding IP";
         }

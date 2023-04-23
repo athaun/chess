@@ -84,7 +84,7 @@ public class Chess extends Scene {
         // Host button
         hostButton = new Button("HOST A GAME", PRIMARY_LIGHT, PRIMARY_DARK, new Frame(300, 225, 200, 75));
         hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
-            System.out.println("Host button clicked!");
+            Log.p("Host button clicked!");
 
             server = new GameServer();
             server.start();
@@ -98,7 +98,7 @@ public class Chess extends Scene {
         // Join button
         joinButton = new Button("JOIN A GAME", PRIMARY_DARK, PRIMARY_LIGHT, new Frame(300, 350, 200, 75));
         joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
-            System.out.println("Join button clicked!");
+            Log.p("Join button clicked!");
             
             Engine.scenes().switchScene(new joinGame());
         });
@@ -121,7 +121,7 @@ public class Chess extends Scene {
     public void update() {
         // Host a game and join it
         if (Keyboard.getKeyDown(Keys.KEY_S) || Keyboard.getKeyDown(Keys.KEY_H)) {
-            Log.p(" S|H: Joining self-hosted game...");
+            Log.p("HOTKEY - S|H: Joining self-hosted game...");
 
             server = new GameServer();
             server.start();
@@ -134,13 +134,13 @@ public class Chess extends Scene {
 
         // Go to the join screen
         if(Keyboard.getKeyDown(Keys.KEY_J) || Keyboard.getKeyDown(Keys.KEY_C)) {
-            Log.p(" J|C: Client Join screen");
+            Log.p("HOTKEY - J|C: Client Join screen");
             Engine.scenes().switchScene(new joinGame());
         }
 
         // Join Localhost game
         if (Keyboard.getKeyDown(Keys.KEY_L)) {
-            Log.p(" L: Joining localhost game...");
+            Log.p("HOTKEY - L: Joining localhost game...");
 
             Engine.scenes().switchScene(new ChessBoard().defer(() -> {
                 client = new GameClient();

@@ -29,6 +29,7 @@ public class Log {
     public static final String CL_PURPLE = "\u001b[35m";
     public static final String CL_CYAN = "\u001b[36m";
     public static final String CL_GRAY = "\u001b[37m";
+    public static final String CL_RESET = "\u001b[0m";
 
     private static int logLevel = FATAL_ONLY;
 
@@ -283,7 +284,7 @@ public class Log {
     }
 
     private static void println(int level, String line) {
-        if (logLevel >= level) System.out.println(line);
+        if (logLevel >= level) System.out.println(line + CL_RESET);
         if (loggingThread != null) loggingThread.log(line.substring(CL_RED.length()), level);
     }
 

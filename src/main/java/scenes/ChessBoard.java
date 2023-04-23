@@ -48,7 +48,7 @@ public class ChessBoard extends Chess {
 
         if (isServer) {
             board = createBoard();
-            System.out.println("[] Board created!");
+            Log.info("SERVER - Board created!");
         }
     }
 
@@ -71,13 +71,10 @@ public class ChessBoard extends Chess {
     }
 
     public void update () {
-        if (Keyboard.getKeyDown(GLFW.GLFW_KEY_SPACE)) {
-            System.out.println("Client sending!");
-        }
 
         // exit the chessboard by pressing escape
         if(Keyboard.getKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
-            System.out.println("Client shutting down!");
+            Log.p("Client shutting down!");
             System.exit(0);
         }
 
@@ -96,7 +93,7 @@ public class ChessBoard extends Chess {
 
                 if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
                     // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
-                    System.out.println("Board " + x + ", " + y + " has been moved to new location!");
+                    Log.p("Board " + x + ", " + y + " has been moved to new location!");
                     futureSelectedTile = board[y][x];
 
                     // Move the piece to the new tile
@@ -115,7 +112,7 @@ public class ChessBoard extends Chess {
                 if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
                     // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
                     currentSelectedTile = board[y][x];
-                    System.out.println("Board " + x + ", " + y + " has been selected to move!");
+                    Log.p("Board " + x + ", " + y + " has been selected to move!");
                 }
 
                 board[y][x].setIsPieceClicked(false);                
