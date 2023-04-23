@@ -13,6 +13,7 @@ import network.KryoRegister;
 import network.requests.JoinRequest;
 import network.requests.Probe;
 import network.responses.InitialSetup;
+import network.responses.KryoResponse;
 import network.responses.ProbeResponse;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
@@ -48,9 +49,9 @@ public class GameClient {
 
         client.addListener(new Listener() {
             public void received (Connection connection, Object req) {
-                if (req instanceof InitialSetup) {
+                if (req instanceof NetData) {
                     NetData data = (NetData) req;
-                    Log.debug(" Initial setup received.");
+                    Log.debug("CLIENT - Initial board setup received.");
 
                     Tile[][] newBoard = new Tile[8][8];
                     for (int x = 0; x < 8; x++) {
@@ -90,12 +91,13 @@ public class GameClient {
     public void addInactiveHost (InetAddress address) {
         inactiveHosts.add(new GameHost(address));
     }
+
     public void probeListener () {
         client.addListener(new Listener() {
             public void received (Connection connection, Object req) {
                 if (req instanceof ProbeResponse) {
                     ProbeResponse response = (ProbeResponse) req;
-                    Log.debug(" Probe response with game ID: " + response.gameID);
+                    Log.debug("CLIENT - Probe response with game ID: " + response.gameID);
 
                     // Only save a single IP for games with the same gameID
                     if (gameHosts.stream().noneMatch(gameHost -> gameHost.gameID == response.gameID)) {
@@ -108,15 +110,13 @@ public class GameClient {
                         });
                     }      
                                  
-                    // remove the host is inactive
+                    // remove the host if inactive
                     if (inactiveHosts.stream().anyMatch(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress())) {
                         // TODO @Asher: make this work later
                         inactiveHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
                         gameHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
                     }
                     
-                } else {
-                    Log.debug(" Probe response with invalid game ID: " + Object.class);
                 }
             }
         });

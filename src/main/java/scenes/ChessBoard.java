@@ -3,7 +3,6 @@ package scenes;
 import graphics.Camera;
 import graphics.Window;
 import input.Keyboard;
-import scenes.chess.GameClient;
 import scenes.chess.GameServer;
 import scenes.pieces.Piece;
 import scenes.pieces.Tile;
@@ -12,11 +11,17 @@ import ui.Text;
 import ui.fonts.Font;
 import static graphics.Graphics.setDefaultBackground;
 import org.lwjgl.glfw.GLFW;
+
+import util.Engine;
 import util.Log;
 
 public class ChessBoard extends Chess {
 
+    // Drawable board
     public static Tile[][] board = new Tile[8][8];
+    // Board data for networking
+    public static char[][] boardData = new char[8][8];
+
     Tile currentSelectedTile = null;
     Tile futureSelectedTile = null;
 
@@ -25,7 +30,7 @@ public class ChessBoard extends Chess {
 
     String ipText = "IP: " + GameServer.getIp();
 
-    boolean isServer = false;
+    public static boolean isServer = false;
     
     public void awake() {
         camera = new Camera();
@@ -47,45 +52,18 @@ public class ChessBoard extends Chess {
         info.change(ipText);
 
         if (isServer) {
-            board = createBoard();
+            boardData = createBoardData();
             Log.info("SERVER - Board created!");
+        } else {
+            Log.info("CLIENT - Waiting for board to be recieved from server!");
         }
     }
 
-    public Tile[][] createBoard () {
-        Tile[][] board = new Tile[8][8];
-
-        int tileSize = Window.getHeight() / 9;
-
-        // Create the board
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                // Alternate the color of the tiles
-                PieceColor color = (x + y) % 2 == 0 ? PieceColor.WHITE : PieceColor.BLACK;
-                // Create the tile
-                board[x][y] = new Tile(x, y, tileSize, color);
-            }
-        }
-
-        return board;
+    public char[][] createBoardData () {
+        return Tile.getStartingLayout();
     }
 
-    public void update () {
-
-        // exit the chessboard by pressing escape
-        if(Keyboard.getKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
-            Log.p("Client shutting down!");
-            System.exit(0);
-        }
-
-        if (isServer) {
-            for (int x = 0; x < 8; x++) {
-                for (int y = 0; y < 8; y++) {
-                    board[x][y].update();
-                }
-            }
-        }
-
+    private void serverUpdate () {
         //board is displayed with y rows first then x columns
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -118,5 +96,20 @@ public class ChessBoard extends Chess {
                 board[y][x].setIsPieceClicked(false);                
             }
         }
+    }
+
+    private void clientUpdate () {
+
+    }
+
+    public void update () {
+        // exit the chessboard by pressing escape
+        if(Keyboard.getKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
+            Log.p("Client shutting down!");
+            System.exit(0);
+        }
+
+        if (isServer) serverUpdate();
+        else clientUpdate();        
     }
 }

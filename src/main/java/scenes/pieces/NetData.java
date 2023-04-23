@@ -25,4 +25,8 @@ public class NetData {
             }
         }
     }
+
+    public NetData (char[][] board) {
+        this.board = board;
+    }
 }

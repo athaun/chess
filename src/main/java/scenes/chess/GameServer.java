@@ -77,10 +77,10 @@ public class GameServer {
         messages.add(request.name + " has joined the server.");
 
         // Send the client the initial setup of the board.
-        NetData setup = new NetData(ChessBoard.board);
+        NetData setup = new NetData(ChessBoard.boardData);
         Log.info("SERVER - Sending initial setup to client " + request.name + " with ID " + gameID);
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y ++) {
+            for (int x = 0; x < 8; x ++) {
                 System.out.print(" " + setup.board[x][y]);
             }
             System.out.println();

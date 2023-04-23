@@ -24,6 +24,21 @@ public class Tile {
         {new Piece(0, 6, PieceType.PAWN, PieceColor.WHITE), new Piece(1, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(2, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(3, 6, PieceType.PAWN, PieceColor.WHITE),  new Piece(4, 6, PieceType.PAWN, PieceColor.WHITE), new Piece(5, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(6, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(7, 6, PieceType.PAWN, PieceColor.WHITE)},
         {new Piece(0, 7, PieceType.ROOK, PieceColor.WHITE), new Piece(1, 7, PieceType.KNIGHT, PieceColor.WHITE), new Piece(2, 7, PieceType.BISHOP, PieceColor.WHITE), new Piece(3, 7, PieceType.QUEEN, PieceColor.WHITE), new Piece(4, 7, PieceType.KING, PieceColor.WHITE), new Piece(5, 7, PieceType.BISHOP, PieceColor.WHITE), new Piece(6, 7, PieceType.KNIGHT, PieceColor.WHITE), new Piece(7, 7, PieceType.ROOK, PieceColor.WHITE)}
     };
+
+    public static char[][] getStartingLayout() {
+        char[][] layout = new char[8][8];
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (startingLayout[y][x] == null) {
+                    layout[x][y] = ' ';
+                    continue;
+                }
+                layout[x][y] = startingLayout[y][x].getCharFromType();
+            }
+        }
+
+        return layout;
+    }
     
     private int x, y;
     private int renderX, renderY;
@@ -134,6 +149,10 @@ public class Tile {
 
     public void update() {
         checkClick();
+    }
+
+    public GameObject getGameObject() {
+        return gameObject;
     }
 
     private boolean pMouseDown = false;
