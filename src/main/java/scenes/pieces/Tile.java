@@ -5,6 +5,7 @@ import org.joml.Vector2f;
 import ecs.GameObject;
 import ecs.SpriteRenderer;
 import graphics.Color;
+import graphics.Window;
 import input.Mouse;
 import scenes.pieces.Piece.PieceColor;
 import scenes.pieces.Piece.PieceType;
@@ -23,6 +24,21 @@ public class Tile {
         {new Piece(0, 6, PieceType.PAWN, PieceColor.WHITE), new Piece(1, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(2, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(3, 6, PieceType.PAWN, PieceColor.WHITE),  new Piece(4, 6, PieceType.PAWN, PieceColor.WHITE), new Piece(5, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(6, 6, PieceType.PAWN, PieceColor.WHITE),   new Piece(7, 6, PieceType.PAWN, PieceColor.WHITE)},
         {new Piece(0, 7, PieceType.ROOK, PieceColor.WHITE), new Piece(1, 7, PieceType.KNIGHT, PieceColor.WHITE), new Piece(2, 7, PieceType.BISHOP, PieceColor.WHITE), new Piece(3, 7, PieceType.QUEEN, PieceColor.WHITE), new Piece(4, 7, PieceType.KING, PieceColor.WHITE), new Piece(5, 7, PieceType.BISHOP, PieceColor.WHITE), new Piece(6, 7, PieceType.KNIGHT, PieceColor.WHITE), new Piece(7, 7, PieceType.ROOK, PieceColor.WHITE)}
     };
+
+    public static char[][] getStartingLayout() {
+        char[][] layout = new char[8][8];
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (startingLayout[y][x] == null) {
+                    layout[x][y] = ' ';
+                    continue;
+                }
+                layout[x][y] = startingLayout[y][x].getCharFromType();
+            }
+        }
+
+        return layout;
+    }
     
     private int x, y;
     private int renderX, renderY;
@@ -59,6 +75,42 @@ public class Tile {
         }
     }
 
+    public Tile (int x, int y, char piece) {
+        this.x = x;
+        this.y = y;
+        this.size = Window.getHeight() / 9;
+
+        this.renderX = x * size;
+        this.renderY = y * size + size;
+
+        this.light = (x + y) % 2 == 0;
+
+        this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
+        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
+        this.gameObject.addComponent(spriteRenderer);
+
+        if (piece != ' ') {
+            this.piece = Piece.getPieceFromChar(piece, x, y);
+            this.piece.calculateSprite(x, y, size);
+        }
+    }
+
+    // Make a new empty tile
+    public Tile (int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.size = Window.getHeight() / 9;
+
+        this.renderX = x * size;
+        this.renderY = y * size + size;
+
+        this.light = (x + y) % 2 == 0;
+
+        this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
+        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
+        this.gameObject.addComponent(spriteRenderer);
+    }
+
     public int getX() {
         return x;
     }
@@ -73,6 +125,9 @@ public class Tile {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        if (piece != null) {
+            this.piece.calculateSprite(x, y, size);
+        }
     }
 
     public boolean isOccupied() {
@@ -84,9 +139,11 @@ public class Tile {
     }
 
     public void update() {
-        if (checkClick()) {
-            System.out.println("Clicked on tile " + x + ", " + y);
-        }
+        checkClick();
+    }
+
+    public GameObject getGameObject() {
+        return gameObject;
     }
 
     private boolean pMouseDown = false;
@@ -102,6 +159,7 @@ public class Tile {
 
             if (Mouse.mouseButtonDown(0) && !pMouseDown) {
                 // Left mouse button is pressed
+                isPieceClicked = true;
                 pMouseDown = true;
                 return true;
             } else if (!Mouse.mouseButtonDown(0) && pMouseDown) {
