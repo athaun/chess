@@ -37,8 +37,13 @@ public class Piece {
 
     public void calculateSprite (int x, int y, int tileSize) {
         float scalar = (float)(graphics.Window.getWidth() / (tileSize * 1.9));
-        this.gameObject = new GameObject(this.color == PieceColor.WHITE ? "White " : "Black " + this.type.toString(), new Vector2f(x * tileSize + scalar * 4, y * tileSize + tileSize / 3), 100);
 
+        if (this.gameObject != null) {
+            Engine.scenes().currentScene().removeGameObjectFromScene(this.gameObject);
+        }
+        
+        this.gameObject = new GameObject(this.color == PieceColor.WHITE ? "White " : "Black " + this.type.toString(), new Vector2f(x * tileSize + scalar * 4, y * tileSize + tileSize / 3), 100);
+        
         SpriteRenderer spriteRenderer = null;
         int spriteIndex = 0;
 
@@ -93,6 +98,61 @@ public class Piece {
         spriteRenderer.setSize(new Vector2f(280 / scalar, 600 / scalar));
         // Add sprite renderer to game object
         this.gameObject.addComponent(spriteRenderer);
+    }
+
+    /*
+     * Returns a char that represents the type and color of the piece to be sent over the network in the NetData class 
+     */
+    public char getCharFromType () {
+        // Return a char that represents the type and color
+        switch (type) {
+            case PAWN:
+                return color == PieceColor.WHITE ? 'P' : 'p';
+            case ROOK:
+                return color == PieceColor.WHITE ? 'R' : 'r';
+            case KNIGHT:
+                return color == PieceColor.WHITE ? 'N' : 'n';
+            case BISHOP:
+                return color == PieceColor.WHITE ? 'B' : 'b';
+            case QUEEN:
+                return color == PieceColor.WHITE ? 'Q' : 'q';
+            case KING:
+                return color == PieceColor.WHITE ? 'K' : 'k';
+            default:
+                return ' ';
+        }
+    }
+
+    public static Piece getPieceFromChar (char c, int x, int y) {
+        // Return a char that represents the type and color
+        switch (c) {
+            case 'P':
+                return new Piece(x, y, PieceType.PAWN, PieceColor.WHITE);
+            case 'R':
+                return new Piece(x, y, PieceType.ROOK, PieceColor.WHITE);
+            case 'N':
+                return new Piece(x, y, PieceType.KNIGHT, PieceColor.WHITE);
+            case 'B':
+                return new Piece(x, y, PieceType.BISHOP, PieceColor.WHITE);
+            case 'Q':
+                return new Piece(x, y, PieceType.QUEEN, PieceColor.WHITE);
+            case 'K':
+                return new Piece(x, y, PieceType.KING, PieceColor.WHITE);
+            case 'p':
+                return new Piece(x, y, PieceType.PAWN, PieceColor.BLACK);
+            case 'r':
+                return new Piece(x, y, PieceType.ROOK, PieceColor.BLACK);
+            case 'n':
+                return new Piece(x, y, PieceType.KNIGHT, PieceColor.BLACK);
+            case 'b':
+                return new Piece(x, y, PieceType.BISHOP, PieceColor.BLACK);
+            case 'q':
+                return new Piece(x, y, PieceType.QUEEN, PieceColor.BLACK);
+            case 'k':
+                return new Piece(x, y, PieceType.KING, PieceColor.BLACK);
+            default:
+                return null;
+        }
     }
 
     public Vector2i getPosition() {
