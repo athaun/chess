@@ -99,30 +99,8 @@ public abstract class Scene {
     private boolean debugMode = false;
     private boolean active = false;
 
-    private Runnable defferedRunnable;
-
-    public Scene () {
-
-    }
-
-    // public Scene (Runnable defferedRunnable) {
-    //     this.defferedRunnable = defferedRunnable;
-    // }
-
-    public Scene defer (Runnable defferedRunnable) {
-        this.defferedRunnable = defferedRunnable;
-        return this;
-    }
-
     public boolean isActive() {
         return active;
-    }
-
-    public void callDefferedRunnable () {
-        if (defferedRunnable != null) {
-            defferedRunnable.run();
-            defferedRunnable = null;
-        }
     }
 
     /**

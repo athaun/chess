@@ -33,8 +33,6 @@ targetCompatibility = 11
 repositories { 
     mavenCentral()
     maven { url 'https://jitpack.io' }
-    maven { url "https://oss.sonatype.org/content/repositories/releases" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 ext.junitVersion = "4.13.2"
@@ -74,9 +72,7 @@ dependencies {
     runtimeOnly("org.lwjgl:lwjgl-opengl::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-stb::$lwjglNatives")
     implementation("org.joml:joml:$jomlVersion")
-    // implementation 'com.github.anubiann00b:kryonet:b6b71d4'
-    implementation 'com.github.crykn:kryonet:2.22.8'
-    implementation 'com.esotericsoftware:kryo:5.5.0'   
+    implementation 'com.github.anubiann00b:kryonet:b6b71d4'
 }
 
 application {

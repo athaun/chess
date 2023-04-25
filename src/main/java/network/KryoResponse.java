@@ -1,4 +1,4 @@
-package network.responses;
+package network;
 
 public class KryoResponse {
     public String text;

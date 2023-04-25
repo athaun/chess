@@ -149,7 +149,6 @@ public class SceneManager {
             scene.initRenderers();
             scene.startUi();
             scene.awake();
-            scene.callDefferedRunnable();
         } else Log.warn("scene awaken called without being enabled", 1);
     }
 

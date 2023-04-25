@@ -11,7 +11,6 @@ import ui.Text;
 import ui.EventHandler.Event;
 import ui.fonts.Font;
 import util.Engine;
-import util.MathUtils;
 
 /**
  * @author Juyas
@@ -31,7 +30,7 @@ public class TextField extends RenderableElement implements TextHolder {
     }
 
     public TextField(String text, Frame frame) {
-        super(new Color(58, 54, 51), frame);
+        super(Color.WHITE, frame);
         this.setCursor(GLFW.GLFW_IBEAM_CURSOR);
         //this component requests focus when clicked on it for receiving input
         this.getEventHandler().registerListener(EventHandler.Event.MOUSE_CLICK, eventHandler -> {
@@ -42,7 +41,7 @@ public class TextField extends RenderableElement implements TextHolder {
         Engine.scenes().currentScene().addUIElement(this);
         Engine.scenes().currentScene().uiRenderer.add(this);
 
-        this.label = new Text(text,  new Font("src/assets/fonts/OpenSans.ttf", MathUtils.constrain(frame.getHeight() - 7, 0, 20), true), new Color(252, 234, 201), 0, 0);
+        this.label = new Text(text,  new Font("src/assets/fonts/OpenSans.ttf", frame.getHeight() - 7, true), Color.BLACK, 0, 0);
         this.cursor = GLFW.GLFW_IBEAM_CURSOR;
 
         getEventHandler().registerListener(Event.MOUSE_CLICK, e -> {
@@ -92,7 +91,7 @@ public class TextField extends RenderableElement implements TextHolder {
     public void update () {
         super.update();
 
-        label.setPosition(getX() + 10, getY() + frame.getHeight() / 2 - label.getHeight() / 2);
+        label.setPosition(getX() + 3, getY() + frame.getHeight() / 2 - label.getHeight() / 2);
 
         if (isMouseOnThis()) {
             if (tintColor != null) {

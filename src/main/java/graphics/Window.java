@@ -252,7 +252,6 @@ public class Window {
         Log.info("window closed");
         //stopping engine and all threads listening for the engine to run
         Engine.getInstance().windowStopped();
-        System.exit(0);
 
     }
 

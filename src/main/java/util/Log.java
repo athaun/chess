@@ -29,7 +29,6 @@ public class Log {
     public static final String CL_PURPLE = "\u001b[35m";
     public static final String CL_CYAN = "\u001b[36m";
     public static final String CL_GRAY = "\u001b[37m";
-    public static final String CL_RESET = "\u001b[0m";
 
     private static int logLevel = FATAL_ONLY;
 
@@ -244,7 +243,7 @@ public class Log {
      */
     public static void p(String text) {
         StackTraceElement source = source();
-        String line = "[PRINT] {" + source + "} " + text;
+        String line = "[MANTEST] {" + source + "} " + text;
         println(-1, CL_PURPLE + line);
     }
 
@@ -260,7 +259,7 @@ public class Log {
     public static void p(String text, int stepUp) {
         StackTraceElement source = source(stepUp);
         StackTraceElement source2 = source();
-        String line = "[PRINT] {" + source + " -> " + source2 + "} " + text;
+        String line = "[MANTEST] {" + source + " -> " + source2 + "} " + text;
         println(-1, CL_PURPLE + line);
     }
 
@@ -284,7 +283,7 @@ public class Log {
     }
 
     private static void println(int level, String line) {
-        if (logLevel >= level) System.out.println(line + CL_RESET);
+        if (logLevel >= level) System.out.println(line);
         if (loggingThread != null) loggingThread.log(line.substring(CL_RED.length()), level);
     }
 
