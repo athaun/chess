@@ -22,6 +22,7 @@ import network.responses.ProbeResponse;
 import scenes.Chess;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
+import scenes.pieces.Piece;
 import util.Engine;
 import util.Log;
 import util.MathUtils;
@@ -61,14 +62,17 @@ public class GameServer {
                 // If the request doesn't extend KryoRequest, ignore it.
                 if (!(req instanceof KryoRequest)) return;
 
+                // If the request is a Probe, respond with a ProbeResponse.
                 if (req instanceof Probe) {
                     probe(connection, (Probe) req);
                 }
 
+                // If the request is a JoinRequest, add the client to the server and send them the initial setup.
                 if (req instanceof JoinRequest) {
                     addClient(connection, (JoinRequest) req);
                 }
 
+                // If the request is a MoveData, validate the move and send it to all clients.
                 if (req instanceof MoveData) {
                     validateMove(connection, (MoveData) req);
                 }
@@ -84,10 +88,22 @@ public class GameServer {
 
         if (clients.size() < 2) {
             Log.info("SERVER - Client attempted to move, but there are not enough players.");
-            return;
+            // return;
         }
 
         // Check if the move is valid.
+        Log.p(move.newX + " , " + move.newY);
+        Piece piece = ChessBoard.board[move.newX][move.newY].getPiece();
+        if(piece != null) {
+            if(Character.isUpperCase(piece.getCharFromType()) != Character.isUpperCase(move.type)) {    
+                Log.p("Jumping on oppenent.");
+            }
+            else {
+                Log.p("Jumping on self.");
+                return;
+            }
+            Log.p(piece.getCharFromType() + "");
+        }
         // !!!
 
         // Send the move to all clients.
@@ -111,6 +127,7 @@ public class GameServer {
         NetData setup = new NetData(ChessBoard.boardData);
         Log.info("SERVER - Sending initial setup to client " + request.name + " with ID " + gameID);
         
+        // Print the board to the console.
         for (int y = 0; y < 8; y ++) {
             for (int x = 0; x < 8; x ++) {
                 System.out.print(" " + setup.board[x][y]);
@@ -118,6 +135,7 @@ public class GameServer {
             System.out.println();
         }
         
+        // Send the setup to the client.
         connection.sendTCP(setup);
 
         // Add the client to the list of clients.

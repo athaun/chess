@@ -26,6 +26,34 @@ public class GameClient {
     Client client;
     String name;
 
+    /*
+     * Information about a game host.
+     */
+    public class GameHost {
+        public int gameID;
+        public InetAddress address;
+        public String hostName;
+
+        public GameHost (InetAddress address) {
+            this.address = address;
+        }
+
+        public GameHost (InetAddress address, int id, String hostName) {
+            this.address = address;
+            this.gameID = id;
+            this.hostName = hostName;
+        }
+    }
+
+    /*
+     * Lists of game hosts for display in the join menu.
+     */
+    private List<GameHost> gameHosts = new ArrayList<>();
+    private List<GameHost> inactiveHosts = new ArrayList<>();
+
+    /*
+     * Creates a new client with a listener for moves.
+     */
     public GameClient () {
         client = new Client();
         client.start();
@@ -42,6 +70,9 @@ public class GameClient {
         });
     }
 
+    /*
+     * Joins a game with the given name and IP address.
+     */
     public boolean join(String name, String ip) {
         this.name = name;
 
@@ -59,12 +90,14 @@ public class GameClient {
         
         client.sendTCP(request);
 
+        // Create a listener for the initial board setup
         client.addListener(new Listener() {
             public void received (Connection connection, Object req) {
                 if (req instanceof NetData) {
                     NetData data = (NetData) req;
                     Log.debug("CLIENT - Initial board setup received.");
 
+                    // Create a new client side board that will be rendered
                     Tile[][] newBoard = new Tile[8][8];
                     for (int x = 0; x < 8; x++) {
                         for (int y = 0; y < 8; y++) {
@@ -81,6 +114,9 @@ public class GameClient {
         return true;
     }
 
+    /*
+     * Sends a move to the server.
+     */
     public void sendMove (Tile old, Tile _new) {
         char type = old.getPiece().getCharFromType();
 
@@ -90,29 +126,17 @@ public class GameClient {
         ));
     }
 
-    public class GameHost {
-        public int gameID;
-        public InetAddress address;
-        public String hostName;
-
-        public GameHost (InetAddress address) {
-            this.address = address;
-        }
-
-        public GameHost (InetAddress address, int id, String hostName) {
-            this.address = address;
-            this.gameID = id;
-            this.hostName = hostName;
-        }
-    }
-
-    private List<GameHost> gameHosts = new ArrayList<>();
-    private List<GameHost> inactiveHosts = new ArrayList<>();
-
+    /*
+     * Adds a host to the list of inactive hosts.
+     * Not really used right now.
+     */
     public void addInactiveHost (InetAddress address) {
         inactiveHosts.add(new GameHost(address));
     }
 
+    /*
+     * Adds a host to the list of hosts and updates the IP address if it already exists for the join menu.
+     */
     public void probeListener () {
         client.addListener(new Listener() {
             public void received (Connection connection, Object req) {
@@ -131,17 +155,22 @@ public class GameClient {
                         });
                     }      
                                  
-                    // remove the host if inactive
-                    // TODO: lol 
+                    // TODO: remove the host if inactive
                 }
             }
         });
     }
 
+    /*
+     * Returns the list of available game hosts.
+     */
     public List<GameHost> getGameHosts () {
         return gameHosts;
     }
 
+    /*
+     * Send a probe request to the host to get game information.
+     */
     public boolean probe (String ip) {
         try {
             client.connect(5000, ip, 54553, 54777);
@@ -159,6 +188,9 @@ public class GameClient {
         return true;
     }
 
+    /*
+     * Returns the name of the computer.
+     */
     public static String getHostName () {
         try {
 			return new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("hostname").getInputStream())).readLine();
