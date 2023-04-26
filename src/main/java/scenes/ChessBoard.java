@@ -24,6 +24,7 @@ public class ChessBoard extends Chess {
 
     Text info;
     Text nextTurn;
+    static boolean whiteTurn = true;
 
     String ipText = "IP: " + GameServer.getIp();
     String turn = "Turn: "; //Tile.getTurn();
@@ -79,6 +80,9 @@ public class ChessBoard extends Chess {
 
         board[newX][newY].setPiece(board[oldX][oldY].getPiece());
         board[oldX][oldY].setPiece(null);
+
+        whiteTurn = !whiteTurn;
+        
     }
 
     private void clientUpdate () {
@@ -111,9 +115,20 @@ public class ChessBoard extends Chess {
                     // Log.p("Board " + x + ", " + y + " has been selected to move!");
                 }
 
-                board[y][x].setIsPieceClicked(false);                
+                board[y][x].setIsPieceClicked(false);     
+                
+                
             }
+
         }
+        if (whiteTurn){
+            turn = "White's turn";
+        }
+        else{
+            turn = "Black's turn";
+        }
+
+        nextTurn.change(turn);
     }
 
     public void update () {

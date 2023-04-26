@@ -92,7 +92,7 @@ public class GameServer {
         }
 
         // Check if the move is valid.
-        Log.p(move.newX + " , " + move.newY);
+
         Piece piece = ChessBoard.board[move.newX][move.newY].getPiece();
         if(piece != null) {
             if(Character.isUpperCase(piece.getCharFromType()) != Character.isUpperCase(move.type)) {    
@@ -102,10 +102,15 @@ public class GameServer {
                 Log.p("Jumping on self.");
                 return;
             }
-            Log.p(piece.getCharFromType() + "");
         }
-        // !!!
-
+        if (Character.isUpperCase(move.type) == whiteTurn){
+            Log.p("Turn is allowed");
+            whiteTurn = !whiteTurn;
+        }
+        else{
+            return;
+        }
+        
         // Send the move to all clients.
         for (Connection client : clients) {
             client.sendTCP(move);
