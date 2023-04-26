@@ -117,7 +117,7 @@ class joinGame extends Chess {
             // map each host in the list to a button in the buttons list.
             int hostIndex = 0;
             for (GameHost h : client.getGameHosts()) {
-                String label = h.gameID + " at " + h.address.getHostName();
+                String label = h.hostName + " at " + h.address.getHostName();
 
                 if (hostIndex >= hosts.size()) {
                     // Add a new button to the list.
@@ -125,7 +125,7 @@ class joinGame extends Chess {
                     
                     // Register a listener for the button that will attempt to join the game.
                     hosts.get(hostIndex).getEventHandler().registerListener(Event.MOUSE_CLICK, e -> {
-                        Log.debug("CLIENT - Attempting to join " + h.gameID + " at " + h.address.getHostAddress());
+                        Log.debug("CLIENT - Attempting to join " + h.hostName + " at " + h.address.getHostAddress());
 
                         try {
                             Engine.scenes().switchScene(new ChessBoard().defer(() -> {
@@ -146,10 +146,11 @@ class joinGame extends Chess {
                             Engine.scenes().switchScene(new joinGame());
                         }
                     });
-                }                
+                }             
+
                 // This does not clean up old hosts that are no longer available due to a bug with the rendering system that doesn't allow too many Buttons in the same render context
                 // and because of the event system which currently does not have a cleanup/remove method
-                // TODO @Asher: Fix this if time is available, for now the basic functionality is here, but if a host disapears and someone tries to join, it will cause a crash.                 
+                // TODO: Fix this if time is available, for now the basic functionality is here, but if a host disapears and someone tries to join, it will cause a crash.                 
 
                 hostIndex++;
             }

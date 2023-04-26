@@ -1,6 +1,8 @@
 package scenes.chess;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,14 +68,9 @@ public class GameClient {
                     Tile[][] newBoard = new Tile[8][8];
                     for (int x = 0; x < 8; x++) {
                         for (int y = 0; y < 8; y++) {
-                            if (data.board[x][y] == ' ') {
-                                newBoard[x][y] = new Tile(x, y);
-                            } else {
-                                newBoard[x][y] = new Tile(x, y, data.board[x][y]);
-                            }
+                            newBoard[x][y] = new Tile(x, y, data.board[x][y]);
                         }
                     }
-
 
                     Log.p("WE MADE IT HERE!");
                     ChessBoard.board = newBoard;                    
@@ -96,14 +93,16 @@ public class GameClient {
     public class GameHost {
         public int gameID;
         public InetAddress address;
+        public String hostName;
 
         public GameHost (InetAddress address) {
             this.address = address;
         }
 
-        public GameHost (InetAddress address, int id) {
+        public GameHost (InetAddress address, int id, String hostName) {
             this.address = address;
             this.gameID = id;
+            this.hostName = hostName;
         }
     }
 
@@ -119,11 +118,11 @@ public class GameClient {
             public void received (Connection connection, Object req) {
                 if (req instanceof ProbeResponse) {
                     ProbeResponse response = (ProbeResponse) req;
-                    Log.debug("CLIENT - Probe response with game ID: " + response.gameID);
+                    Log.debug("CLIENT - Probe response with game ID: " + response.gameID + " from " + response.hostName);
 
                     // Only save a single IP for games with the same gameID
                     if (gameHosts.stream().noneMatch(gameHost -> gameHost.gameID == response.gameID)) {
-                        GameHost gameHost = new GameHost(connection.getRemoteAddressTCP().getAddress(), response.gameID);
+                        GameHost gameHost = new GameHost(connection.getRemoteAddressTCP().getAddress(), response.gameID, response.hostName);
                         gameHosts.add(gameHost);
                     } else {
                         gameHosts.stream().filter(gameHost -> gameHost.gameID == response.gameID).forEach(gameHost -> {
@@ -158,6 +157,15 @@ public class GameClient {
         client.sendTCP(request);
 
         return true;
+    }
+
+    public static String getHostName () {
+        try {
+			return new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("hostname").getInputStream())).readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return "HOSTNAME";
     }
 
     public void stop() {

@@ -80,22 +80,22 @@ public class Tile {
     }
 
     // Make a new empty tile
-    public Tile (int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.size = Window.getHeight() / 9;
+    // public Tile (int x, int y) {
+    //     this.x = x;
+    //     this.y = y;
+    //     this.size = Window.getHeight() / 9;
 
-        this.renderX = x * size;
-        this.renderY = y * size + size;
+    //     this.renderX = x * size;
+    //     this.renderY = y * size + size;
 
-        this.light = (x + y) % 2 == 0;
+    //     this.light = (x + y) % 2 == 0;
 
-        // Log.debug("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
+    //     // Log.debug("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
 
-        this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
-        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
-        this.gameObject.addComponent(spriteRenderer);
-    }
+    //     this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
+    //     spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
+    //     this.gameObject.addComponent(spriteRenderer);
+    // }
 
     public int getX() {
         return x;

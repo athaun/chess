@@ -1,6 +1,8 @@
 package scenes.chess;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import network.requests.MoveData;
 import network.requests.Probe;
 import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
+import scenes.Chess;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
 import util.Engine;
@@ -30,8 +33,6 @@ public class GameServer {
     Server server = new Server();
 
     private List<Connection> clients = new ArrayList<Connection>();
-
-    public ArrayList<String> messages = new ArrayList<String>();
 
     private static int gameID = 0;
 
@@ -80,6 +81,11 @@ public class GameServer {
     private void validateMove (Connection connection, MoveData move) {
         Log.info("SERVER - Validating move from client with ID " + gameID);
 
+        if (clients.size() < 2) {
+            Log.info("SERVER - Client attempted to move, but there are not enough players.");
+            return;
+        }
+
         // Check if the move is valid.
         // !!!
 
@@ -93,23 +99,30 @@ public class GameServer {
      * Adds a client to the server.
      */
     private void addClient (Connection connection, JoinRequest request) {
-        Log.info("SERVER - Client " + request.name + " has joined the server.");
-        messages.add(request.name + " has joined the server.");
+
+        if (clients.size() >= 2) {
+            Log.info("SERVER - Client " + request.name + " attempted to join, but the server is full.");
+            // return;
+            Log.warn("IF YOU SEE THIS, IT MEANS THE SERVER IS FULL BUT YOU ARE STILL ABLE TO JOIN. THIS IS TEMPORARY AND WILL BE CHANGED IN THE FUTURE.");
+        }
 
         // Send the client the initial setup of the board.
         NetData setup = new NetData(ChessBoard.boardData);
         Log.info("SERVER - Sending initial setup to client " + request.name + " with ID " + gameID);
+        
         for (int y = 0; y < 8; y ++) {
             for (int x = 0; x < 8; x ++) {
                 System.out.print(" " + setup.board[x][y]);
             }
             System.out.println();
         }
-        setup.board[0][1] = 'N';
+        
         connection.sendTCP(setup);
 
         // Add the client to the list of clients.
         clients.add(connection);
+
+        Log.info("SERVER - Client " + request.name + " has joined the server.");
     }
 
     /*
@@ -119,6 +132,7 @@ public class GameServer {
         ProbeResponse response = new ProbeResponse();
         response.gameID = gameID;
         response.open = true;
+        response.hostName = Chess.computerName;
 
         Log.info("SERVER - Responding to probe with ID: " + response.gameID);
 

@@ -56,6 +56,8 @@ public class Chess extends Scene {
     // Knight sprites for the title
     GameObject blackKnight;
     GameObject whiteKnight;
+
+    public static String computerName;
     
     public static void main (String[] args) {
         Engine.init(800, 900, "Chess");
@@ -72,6 +74,8 @@ public class Chess extends Scene {
     public void awake() {
         camera = new Camera();
         setDefaultBackground(30, 30, 30);
+
+        computerName = System.getProperty("user.name");
 
         // Knight sprites
         blackKnight = new GameObject(new Vector2f((Window.getWidth() / 2) - 325, 25)).addComponent(new SpriteRenderer("src/assets/images/black_knight.png", new Vector2f(135, 230)));
@@ -91,7 +95,7 @@ public class Chess extends Scene {
 
             Engine.scenes().switchScene(new ChessBoard().defer(() -> {
                 client = new GameClient();
-                client.join("Server's client", "127.0.0.1");
+                client.join(computerName, "127.0.0.1");
             }));
         });
     
@@ -129,7 +133,7 @@ public class Chess extends Scene {
 
             Engine.scenes().switchScene(new ChessBoard().defer(() -> {
                 client = new GameClient();
-                client.join("Server's client", "127.0.0.1");
+                client.join(computerName, "127.0.0.1");
             }));
         }
 
@@ -145,7 +149,7 @@ public class Chess extends Scene {
 
             Engine.scenes().switchScene(new ChessBoard().defer(() -> {
                 client = new GameClient();
-                client.join("Server's client", "127.0.0.1");
+                client.join(computerName, "127.0.0.1");
             }));
         }
 
