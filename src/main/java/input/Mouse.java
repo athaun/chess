@@ -207,4 +207,8 @@ public class Mouse {
 
         return currentY;
     }
+
+    public static CharSequence getWorldPosition() {
+      return null;
+    }
 }

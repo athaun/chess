@@ -17,6 +17,7 @@ import util.Engine;
  */
 public class Button extends RenderableElement implements TextHolder {
 
+    public static Object selectedPiece;
     private Text label;
 
     public Button(String label, Color backgroundColor, Color labelColor, Frame frame) {

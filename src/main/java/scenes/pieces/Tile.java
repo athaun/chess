@@ -13,6 +13,7 @@ import ui.element.Button;
 
 public class Tile {
 
+    public static final char EMPTY_TILE = 0;
     // Starting layout of the board with black on top and white on bottom, null means empty
     private static Piece[][] startingLayout = {
         {new Piece(0, 0, PieceType.ROOK, PieceColor.BLACK), new Piece(1, 0, PieceType.KNIGHT, PieceColor.BLACK), new Piece(2, 0, PieceType.BISHOP, PieceColor.BLACK), new Piece(3, 0, PieceType.QUEEN, PieceColor.BLACK), new Piece(4, 0, PieceType.KING, PieceColor.BLACK), new Piece(5, 0, PieceType.BISHOP, PieceColor.BLACK), new Piece(6, 0, PieceType.KNIGHT, PieceColor.BLACK), new Piece(7, 0, PieceType.ROOK, PieceColor.BLACK)},
@@ -44,6 +45,7 @@ public class Tile {
     private int renderX, renderY;
     private int size;
     private Piece piece;
+    private boolean isPieceClicked;
 
     private boolean light = false;
 
@@ -159,7 +161,7 @@ public class Tile {
 
             if (Mouse.mouseButtonDown(0) && !pMouseDown) {
                 // Left mouse button is pressed
-                isPieceClicked = true;
+                boolean isPieceClicked = true;
                 pMouseDown = true;
                 return true;
             } else if (!Mouse.mouseButtonDown(0) && pMouseDown) {
@@ -175,4 +177,13 @@ public class Tile {
         }
         return false;
     }
-}
+
+    public boolean isPieceClicked() {
+        return false;
+    }
+    public void setIsPieceClicked(boolean b) {
+               isPieceClicked = b;
+            }
+         
+        }
+

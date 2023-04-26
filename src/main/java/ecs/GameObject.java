@@ -250,4 +250,8 @@ public class GameObject {
     public List<Component> getComponents() {
         return components;
     }
+
+    public String getTransform() {
+      return null;
+    }
 }

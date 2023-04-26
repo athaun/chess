@@ -117,8 +117,10 @@ public class Chess extends Scene {
      * Primary scene loop:
      * Checks for hotkeys
      */
+   
     @Override
     public void update() {
+
         // Host a game and join it
         if (Keyboard.getKeyDown(Keys.KEY_S) || Keyboard.getKeyDown(Keys.KEY_H)) {
             Log.p("HOTKEY - S|H: Joining self-hosted game...");
@@ -153,4 +155,6 @@ public class Chess extends Scene {
             System.exit(0);
         }
     }
+
+    
 }

@@ -18,6 +18,7 @@ import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
+import scenes.pieces.Piece.PieceColor;
 import util.Engine;
 import util.Log;
 import util.MathUtils;
@@ -119,5 +120,12 @@ public class GameServer {
             e.printStackTrace();
             return "Error Finding IP";
         }
+    }
+
+    public static PieceColor getCurrentPlayer() {
+      return null;
+    }
+
+    public static void endTurn() {
     }
 }

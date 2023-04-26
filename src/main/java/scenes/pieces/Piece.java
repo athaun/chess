@@ -25,7 +25,7 @@ public class Piece {
 
     private static Spritesheet spritesheet;
 
-    public static void loadSprites (String path) {
+    public static void loadSprites(String path) {
         spritesheet = new Spritesheet(new Texture(path), 280, 600, 12, 0);
     }
 
@@ -35,15 +35,17 @@ public class Piece {
         this.color = color;
     }
 
-    public void calculateSprite (int x, int y, int tileSize) {
-        float scalar = (float)(graphics.Window.getWidth() / (tileSize * 1.9));
+    public void calculateSprite(int x, int y, int tileSize) {
+        float scalar = (float) (graphics.Window.getWidth() / (tileSize * 1.9));
 
         if (this.gameObject != null) {
             Engine.scenes().currentScene().removeGameObjectFromScene(this.gameObject);
         }
-        
-        this.gameObject = new GameObject(this.color == PieceColor.WHITE ? "White " : "Black " + this.type.toString(), new Vector2f(x * tileSize + scalar * 4, y * tileSize + tileSize / 3), 100);
-        
+
+        this.gameObject = new GameObject(
+                (this.color == PieceColor.WHITE ? "White " : "Black ") + this.type.toString(),
+                new Vector2f(x * tileSize + scalar * 4, y * tileSize + tileSize / 3), 100);
+
         SpriteRenderer spriteRenderer = null;
         int spriteIndex = 0;
 
@@ -103,7 +105,7 @@ public class Piece {
     /*
      * Returns a char that represents the type and color of the piece to be sent over the network in the NetData class 
      */
-    public char getCharFromType () {
+    public char getCharFromType() {
         // Return a char that represents the type and color
         switch (type) {
             case PAWN:
@@ -169,5 +171,21 @@ public class Piece {
 
     public PieceColor getColor () {
         return color;
+    }
+
+    public boolean move(Tile currentSelectedTile, Tile futureSelectedTile) {
+        return false;
+    }
+
+    public String getName() {
+      return null;
+    }
+
+    public char getSymbol() {
+      return 0;
+    }
+
+    public Tile[] getValidMoves(Tile currentSelectedTile, Tile[][] board) {
+      return null;
     }
 }
