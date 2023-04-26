@@ -22,6 +22,7 @@ import network.responses.ProbeResponse;
 import scenes.Chess;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
+import scenes.pieces.Piece;
 import util.Engine;
 import util.Log;
 import util.MathUtils;
@@ -86,10 +87,22 @@ public class GameServer {
 
         if (clients.size() < 2) {
             Log.info("SERVER - Client attempted to move, but there are not enough players.");
-            return;
+            //return;
         }
 
         // Check if the move is valid.
+        Log.p(move.newX + " , " + move.newY);
+        Piece piece = ChessBoard.board[move.newX][move.newY].getPiece();
+        if(piece != null) {
+            if(Character.isUpperCase(piece.getCharFromType()) != Character.isUpperCase(move.type)) {    
+                Log.p("Jumping on oppenent.");
+            }
+            else {
+                Log.p("Jumping on self.");
+                return;
+            }
+            Log.p(piece.getCharFromType() + "");
+        }
         // !!!
 
         // Send the move to all clients.

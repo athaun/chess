@@ -62,7 +62,9 @@ class joinGame extends Chess {
 
         // Text field. Then display the IP on the chess game window.
         ipField = new TextField("127.0.0.1", new Frame(250, 75, 200, 70));
+        ipField.tintColor = SECONDARY_DARK.toNormalizedVec4f();
         joinButton = new Button("JOIN", PRIMARY_DARK, PRIMARY_LIGHT, new Frame(455, 75, 95, 70));
+        joinButton.tintColor = SECONDARY_DARK.toNormalizedVec4f();
         joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             try {
                 Engine.scenes().switchScene(new ChessBoard().defer(() -> {
@@ -120,8 +122,10 @@ class joinGame extends Chess {
                 String label = h.hostName + " at " + h.address.getHostName();
 
                 if (hostIndex >= hosts.size()) {
-                    // Add a new button to the list.
-                    hosts.add(new Button(label, PRIMARY_DARK, PRIMARY_LIGHT, new Frame(250, 175 + (hostIndex * 75), 300, 70)));
+                    Button newButton = new Button(label, PRIMARY_DARK, PRIMARY_LIGHT, new Frame(250, 175 + (hostIndex * 75), 300, 70));
+                    newButton.tintColor = SECONDARY_DARK.toNormalizedVec4f();
+                    hosts.add(newButton);
+
                     
                     // Register a listener for the button that will attempt to join the game.
                     hosts.get(hostIndex).getEventHandler().registerListener(Event.MOUSE_CLICK, e -> {

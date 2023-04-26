@@ -38,6 +38,9 @@ public class Chess extends Scene {
     // Constant colors
     public static Color PRIMARY_LIGHT = new Color(252, 234, 201); 
     public static Color PRIMARY_DARK = new Color(58, 54, 51);
+    public static Color SECONDARY_LIGHT = new Color(212, 204, 171);//252, 234, 201
+    public static Color SECONDARY_DARK = new Color(46, 43, 41);
+
 
     // Networking
     public static GameServer server;
@@ -87,6 +90,7 @@ public class Chess extends Scene {
 
         // Host button
         hostButton = new Button("HOST A GAME", PRIMARY_LIGHT, PRIMARY_DARK, new Frame(300, 225, 200, 75));
+        hostButton.tintColor = SECONDARY_LIGHT.toNormalizedVec4f();
         hostButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             Log.p("Host button clicked!");
 
@@ -101,6 +105,7 @@ public class Chess extends Scene {
     
         // Join button
         joinButton = new Button("JOIN A GAME", PRIMARY_DARK, PRIMARY_LIGHT, new Frame(300, 350, 200, 75));
+        joinButton.tintColor = SECONDARY_DARK.toNormalizedVec4f();
         joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             Log.p("Join button clicked!");
             
@@ -109,6 +114,7 @@ public class Chess extends Scene {
         
         // Exit button
         exitButton = new Button("EXIT", PRIMARY_LIGHT, PRIMARY_DARK, new Frame(300, 475, 200, 75));
+        exitButton.tintColor = SECONDARY_LIGHT.toNormalizedVec4f();
         exitButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             System.exit(0);
         });
