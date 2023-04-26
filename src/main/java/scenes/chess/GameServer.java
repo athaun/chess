@@ -60,14 +60,17 @@ public class GameServer {
                 // If the request doesn't extend KryoRequest, ignore it.
                 if (!(req instanceof KryoRequest)) return;
 
+                // If the request is a Probe, respond with a ProbeResponse.
                 if (req instanceof Probe) {
                     probe(connection, (Probe) req);
                 }
 
+                // If the request is a JoinRequest, add the client to the server and send them the initial setup.
                 if (req instanceof JoinRequest) {
                     addClient(connection, (JoinRequest) req);
                 }
 
+                // If the request is a MoveData, validate the move and send it to all clients.
                 if (req instanceof MoveData) {
                     validateMove(connection, (MoveData) req);
                 }
@@ -110,6 +113,7 @@ public class GameServer {
         NetData setup = new NetData(ChessBoard.boardData);
         Log.info("SERVER - Sending initial setup to client " + request.name + " with ID " + gameID);
         
+        // Print the board to the console.
         for (int y = 0; y < 8; y ++) {
             for (int x = 0; x < 8; x ++) {
                 System.out.print(" " + setup.board[x][y]);
@@ -117,6 +121,7 @@ public class GameServer {
             System.out.println();
         }
         
+        // Send the setup to the client.
         connection.sendTCP(setup);
 
         // Add the client to the list of clients.

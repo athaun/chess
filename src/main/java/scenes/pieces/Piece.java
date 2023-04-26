@@ -35,6 +35,10 @@ public class Piece {
         this.color = color;
     }
 
+    /*
+     * Generates the piece sprite at the right position and size.
+     * Pulls the sprite from the spritesheet based on the piece type and color.
+     */
     public void calculateSprite (int x, int y, int tileSize) {
         float scalar = (float)(graphics.Window.getWidth() / (tileSize * 1.9));
 
@@ -123,6 +127,9 @@ public class Piece {
         }
     }
 
+    /*
+     * Returns a piece from a char that represents the type and color of the piece to be sent over the network in the NetData class
+     */
     public static Piece getPieceFromChar (char c, int x, int y) {
         // Return a char that represents the type and color
         switch (c) {

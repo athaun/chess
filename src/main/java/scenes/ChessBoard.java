@@ -29,6 +29,9 @@ public class ChessBoard extends Chess {
 
     public static boolean isServer = false;
     
+    /*
+     * Called when the scene is first loaded.
+     */
     public void awake() {
         camera = new Camera();
         setDefaultBackground(100, 100, 100);
@@ -56,15 +59,16 @@ public class ChessBoard extends Chess {
         }
     }
 
+    /*
+     * Called by the server to create the board data which is sent to the client on join.
+     */
     public char[][] createBoardData () {
         return Tile.getStartingLayout();
     }
 
-    private void serverUpdate () {
-        // board is displayed with y rows first then x columns
-
-    }
-
+    /*
+     * This method is called when the client receives a move from the server.
+     */
     public static void movePiece (int oldX, int oldY, int newX, int newY, char type) {
         // Log.debug("CLIENT - Moving piece from " + oldX + ", " + oldY + " to " + newX + ", " + newY);
 
@@ -113,8 +117,6 @@ public class ChessBoard extends Chess {
             Log.p("Client shutting down!");
             System.exit(0);
         }
-
-        if (isServer) serverUpdate();
         
         clientUpdate();        
     }
