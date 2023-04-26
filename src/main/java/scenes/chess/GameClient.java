@@ -11,6 +11,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import network.KryoRegister;
 import network.requests.JoinRequest;
+import network.requests.MoveData;
 import network.requests.Probe;
 import network.responses.InitialSetup;
 import network.responses.KryoResponse;
@@ -28,12 +29,23 @@ public class GameClient {
     public GameClient () {
         client = new Client();
         client.start();
+
+        // Create a move listener
+        client.addListener(new Listener() {
+            public void received (Connection connection, Object req) {
+                if (req instanceof MoveData) {
+                    MoveData data = (MoveData) req;
+                    Log.debug("CLIENT - Move received: " + data.oldX + ", " + data.oldY + " to " + data.newX + ", " + data.newY);
+                    ChessBoard.movePiece(data.oldX, data.oldY, data.newX, data.newY, data.type);
+                }
+            }
+        });
     }
 
     public boolean join(String name, String ip) {
         this.name = name;
 
-        try {
+        try { 
             client.connect(10 * 1000, ip, 54553, 54777);
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,6 +81,15 @@ public class GameClient {
         });
 
         return true;
+    }
+
+    public void sendMove (Tile old, Tile _new) {
+        char type = old.getPiece().getCharFromType();
+
+        client.sendTCP(new MoveData(
+            old.getX(), old.getY(), type,
+            _new.getX(), _new.getY(), type
+        ));
     }
 
     public class GameHost {

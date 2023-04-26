@@ -13,6 +13,7 @@ import com.esotericsoftware.kryonet.Server;
 import network.KryoRegister;
 import network.requests.JoinRequest;
 import network.requests.KryoRequest;
+import network.requests.MoveData;
 import network.requests.Probe;
 import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
@@ -65,8 +66,27 @@ public class GameServer {
                 if (req instanceof JoinRequest) {
                     addClient(connection, (JoinRequest) req);
                 }
+
+                if (req instanceof MoveData) {
+                    validateMove(connection, (MoveData) req);
+                }
             }
         });  
+    }
+
+    /*
+     * Validates a move.
+     */
+    private void validateMove (Connection connection, MoveData move) {
+        Log.info("SERVER - Validating move from client with ID " + gameID);
+
+        // Check if the move is valid.
+        // !!!
+
+        // Send the move to all clients.
+        for (Connection client : clients) {
+            client.sendTCP(move);
+        }
     }
 
     /*
@@ -85,6 +105,7 @@ public class GameServer {
             }
             System.out.println();
         }
+        setup.board[0][1] = 'N';
         connection.sendTCP(setup);
 
         // Add the client to the list of clients.
