@@ -1,6 +1,8 @@
 package scenes.chess;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +13,8 @@ import com.esotericsoftware.kryonet.Listener;
 
 import network.KryoRegister;
 import network.requests.JoinRequest;
+import network.requests.MoveData;
 import network.requests.Probe;
-import network.responses.InitialSetup;
-import network.responses.KryoResponse;
 import network.responses.ProbeResponse;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
@@ -28,12 +29,23 @@ public class GameClient {
     public GameClient () {
         client = new Client();
         client.start();
+
+        // Create a move listener
+        client.addListener(new Listener() {
+            public void received (Connection connection, Object req) {
+                if (req instanceof MoveData) {
+                    MoveData data = (MoveData) req;
+                    Log.debug("CLIENT - Move received: " + data.oldX + ", " + data.oldY + " to " + data.newX + ", " + data.newY);
+                    ChessBoard.movePiece(data.oldX, data.oldY, data.newX, data.newY, data.type);
+                }
+            }
+        });
     }
 
     public boolean join(String name, String ip) {
         this.name = name;
 
-        try {
+        try { 
             client.connect(10 * 1000, ip, 54553, 54777);
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,13 +68,11 @@ public class GameClient {
                     Tile[][] newBoard = new Tile[8][8];
                     for (int x = 0; x < 8; x++) {
                         for (int y = 0; y < 8; y++) {
-                            if (data.board[x][y] == ' ') {
-                                newBoard[x][y] = new Tile(x, y);
-                            } else {
-                                newBoard[x][y] = new Tile(x, y, data.board[x][y]);
-                            }
+                            newBoard[x][y] = new Tile(x, y, data.board[x][y]);
                         }
                     }
+
+                    Log.p("WE MADE IT HERE!");
                     ChessBoard.board = newBoard;                    
                 }
             }
@@ -71,17 +81,28 @@ public class GameClient {
         return true;
     }
 
+    public void sendMove (Tile old, Tile _new) {
+        char type = old.getPiece().getCharFromType();
+
+        client.sendTCP(new MoveData(
+            old.getX(), old.getY(), type,
+            _new.getX(), _new.getY(), type
+        ));
+    }
+
     public class GameHost {
         public int gameID;
         public InetAddress address;
+        public String hostName;
 
         public GameHost (InetAddress address) {
             this.address = address;
         }
 
-        public GameHost (InetAddress address, int id) {
+        public GameHost (InetAddress address, int id, String hostName) {
             this.address = address;
             this.gameID = id;
+            this.hostName = hostName;
         }
     }
 
@@ -97,11 +118,11 @@ public class GameClient {
             public void received (Connection connection, Object req) {
                 if (req instanceof ProbeResponse) {
                     ProbeResponse response = (ProbeResponse) req;
-                    Log.debug("CLIENT - Probe response with game ID: " + response.gameID);
+                    Log.debug("CLIENT - Probe response with game ID: " + response.gameID + " from " + response.hostName);
 
                     // Only save a single IP for games with the same gameID
                     if (gameHosts.stream().noneMatch(gameHost -> gameHost.gameID == response.gameID)) {
-                        GameHost gameHost = new GameHost(connection.getRemoteAddressTCP().getAddress(), response.gameID);
+                        GameHost gameHost = new GameHost(connection.getRemoteAddressTCP().getAddress(), response.gameID, response.hostName);
                         gameHosts.add(gameHost);
                     } else {
                         gameHosts.stream().filter(gameHost -> gameHost.gameID == response.gameID).forEach(gameHost -> {
@@ -111,12 +132,7 @@ public class GameClient {
                     }      
                                  
                     // remove the host if inactive
-                    if (inactiveHosts.stream().anyMatch(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress())) {
-                        // TODO @Asher: make this work later
-                        inactiveHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
-                        gameHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
-                    }
-                    
+                    // TODO: lol 
                 }
             }
         });
@@ -141,6 +157,15 @@ public class GameClient {
         client.sendTCP(request);
 
         return true;
+    }
+
+    public static String getHostName () {
+        try {
+			return new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("hostname").getInputStream())).readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return "HOSTNAME";
     }
 
     public void stop() {
