@@ -10,6 +10,7 @@ import input.Mouse;
 import scenes.pieces.Piece.PieceColor;
 import scenes.pieces.Piece.PieceType;
 import ui.element.Button;
+import util.Log;
 
 public class Tile {
 
@@ -56,26 +57,6 @@ public class Tile {
     private GameObject gameObject;
     private SpriteRenderer spriteRenderer;
 
-    public Tile(int x, int y, int size, PieceColor color) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-
-        this.renderX = x * size;
-        this.renderY = y * size + size;
-
-        this.light = color == PieceColor.WHITE;
-
-        this.gameObject = new GameObject(color.toString().toLowerCase() + " tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
-        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
-        this.gameObject.addComponent(spriteRenderer);
-
-        if (startingLayout[y][x] != null) {
-            this.piece = startingLayout[y][x];
-            this.piece.calculateSprite(x, y, size);
-        }
-    }
-
     public Tile (int x, int y, char piece) {
         this.x = x;
         this.y = y;
@@ -85,6 +66,8 @@ public class Tile {
         this.renderY = y * size + size;
 
         this.light = (x + y) % 2 == 0;
+
+        // Log.p("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
 
         this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
         spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
@@ -106,6 +89,8 @@ public class Tile {
         this.renderY = y * size + size;
 
         this.light = (x + y) % 2 == 0;
+
+        // Log.debug("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
 
         this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
         spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));

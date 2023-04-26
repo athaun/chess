@@ -66,7 +66,7 @@ public class ChessBoard extends Chess {
     }
 
     public static void movePiece (int oldX, int oldY, int newX, int newY, char type) {
-        Log.debug("CLIENT - Moving piece from " + oldX + ", " + oldY + " to " + newX + ", " + newY);
+        // Log.debug("CLIENT - Moving piece from " + oldX + ", " + oldY + " to " + newX + ", " + newY);
 
         board[newX][newY].setPiece(board[oldX][oldY].getPiece());
         board[oldX][oldY].setPiece(null);
@@ -81,12 +81,8 @@ public class ChessBoard extends Chess {
 
                 if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
                     // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
-                    Log.p("Board " + x + ", " + y + " has been moved to new location!");
+                    // Log.p("Board " + x + ", " + y + " has been moved to new location!");
                     futureSelectedTile = board[y][x];
-
-                    // // Move the piece to the new tile
-                    // futureSelectedTile.setPiece(currentSelectedTile.getPiece());
-                    // currentSelectedTile.setPiece(null);
 
                     // Request the server to update the board
                     client.sendMove(currentSelectedTile, futureSelectedTile);
@@ -103,7 +99,7 @@ public class ChessBoard extends Chess {
                 if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
                     // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
                     currentSelectedTile = board[y][x];
-                    Log.p("Board " + x + ", " + y + " has been selected to move!");
+                    // Log.p("Board " + x + ", " + y + " has been selected to move!");
                 }
 
                 board[y][x].setIsPieceClicked(false);                

@@ -108,9 +108,10 @@ public class Chess extends Scene {
         exitButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             System.exit(0);
         });
-        
+
         // Credits
         creditText = new Text("Created by Asher Haun, Sylvia Flores, Ellie Walser and Younus Syed", new Font(), PRIMARY_LIGHT, Window.getWidth() / 2, 800, 1, true, true);
+
     }
 
     /*

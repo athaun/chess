@@ -13,8 +13,6 @@ import network.KryoRegister;
 import network.requests.JoinRequest;
 import network.requests.MoveData;
 import network.requests.Probe;
-import network.responses.InitialSetup;
-import network.responses.KryoResponse;
 import network.responses.ProbeResponse;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
@@ -75,6 +73,9 @@ public class GameClient {
                             }
                         }
                     }
+
+
+                    Log.p("WE MADE IT HERE!");
                     ChessBoard.board = newBoard;                    
                 }
             }
@@ -132,12 +133,7 @@ public class GameClient {
                     }      
                                  
                     // remove the host if inactive
-                    if (inactiveHosts.stream().anyMatch(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress())) {
-                        // TODO @Asher: make this work later
-                        inactiveHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
-                        gameHosts.removeIf(gameHost -> gameHost.address == connection.getRemoteAddressTCP().getAddress());
-                    }
-                    
+                    // TODO: lol 
                 }
             }
         });
