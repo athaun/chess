@@ -46,6 +46,7 @@ public class Tile {
     private Piece piece;
 
     private boolean light = false;
+    private boolean isPieceClicked = false;
 
     private Color black = new Color(193, 114, 86);
     private Color blackHovered = new Color(170, 104, 76);
@@ -132,6 +133,10 @@ public class Tile {
 
     public boolean isOccupied() {
         return piece != null;
+    }
+
+    public boolean isPieceClicked(){
+        return isPieceClicked;
     }
 
     public boolean isOccupiedBy(PieceColor color) {
