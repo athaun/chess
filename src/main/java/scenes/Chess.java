@@ -103,7 +103,7 @@ public class Chess extends Scene {
         joinButton = new Button("JOIN A GAME", PRIMARY_DARK, PRIMARY_LIGHT, new Frame(300, 350, 200, 75));
         joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             Log.p("Join button clicked!");
-            
+
             Engine.scenes().switchScene(new joinGame());
         });
         
@@ -114,7 +114,7 @@ public class Chess extends Scene {
         });
 
         // Credits
-        creditText = new Text("Created by Asher Haun, Sylvia Flores, Ellie Walser and Younus Syed", new Font(), PRIMARY_LIGHT, Window.getWidth() / 2, 800, 1, true, true);
+        creditText = new Text("Created by Asher Haun, Silvia Flores, Ellie Walser and Younus Syed", new Font(), PRIMARY_LIGHT, Window.getWidth() / 2, 800, 1, true, true);
 
     }
 

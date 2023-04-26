@@ -45,6 +45,7 @@ public class Tile {
     private int renderX, renderY;
     private int size;
     private Piece piece;
+    private String nextTurn = "White";
 
     private boolean light = false;
     private boolean isPieceClicked = false;
@@ -97,6 +98,10 @@ public class Tile {
     //     this.gameObject.addComponent(spriteRenderer);
     // }
 
+    public String getTurn(){
+        return nextTurn;
+    }
+
     public int getX() {
         return x;
     }
@@ -122,6 +127,10 @@ public class Tile {
 
     public boolean isPieceClicked(){
         return isPieceClicked;
+    }
+
+    public void setIsPieceClicked(boolean isPieceClicked){
+        this.isPieceClicked = isPieceClicked;
     }
 
     public boolean isOccupiedBy(PieceColor color) {

@@ -31,11 +31,12 @@ import static scenes.ChessBoard.*;
 public class GameServer {
 
     Server server = new Server();
-
+    
     private List<Connection> clients = new ArrayList<Connection>();
-
+    
     private static int gameID = 0;
-
+    
+    boolean whiteTurn = true;
     /*
      * Starts the server.
      */
