@@ -71,6 +71,9 @@ public class ChessBoard extends Chess {
      */
     public static void movePiece (int oldX, int oldY, int newX, int newY, char type) {
         // Log.debug("CLIENT - Moving piece from " + oldX + ", " + oldY + " to " + newX + ", " + newY);
+        if (board[newX][newY].isOccupied()) {
+            board[newX][newY].getPiece().removeGameObject();        
+        }
 
         board[newX][newY].setPiece(board[oldX][oldY].getPiece());
         board[oldX][oldY].setPiece(null);
