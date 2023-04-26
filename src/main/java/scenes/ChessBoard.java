@@ -23,11 +23,12 @@ public class ChessBoard extends Chess {
     Tile futureSelectedTile = null;
 
     Text info;
-    Text nextTurn;
+    Text currentTurn;
     static boolean whiteTurn = true;
 
     String ipText = "IP: " + GameServer.getIp();
-    String turn = "Turn: "; //Tile.getTurn();
+    String turn = "Turn: " + currentTurn; //Tile.getTurn();
+
 
     public static boolean isServer = false;
     
@@ -43,7 +44,7 @@ public class ChessBoard extends Chess {
         Piece.loadSprites("src/assets/images/pack.png");
 
         info = new Text(ipText, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 10, 10);
-        nextTurn = new Text(turn, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 600, 10);
+        currentTurn = new Text(turn, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 545, 10);
 
         isServer = server != null;
 
@@ -122,13 +123,15 @@ public class ChessBoard extends Chess {
 
         }
         if (whiteTurn){
-            turn = "White's turn";
+            turn = "Turn: " + "White's turn";
+            currentTurn.setColor(PRIMARY_LIGHT);
         }
         else{
-            turn = "Black's turn";
+            turn = "Turn: " + "Black's turn";
+            currentTurn.setColor(PRIMARY_DARK);
         }
 
-        nextTurn.change(turn);
+        currentTurn.change(turn);
     }
 
     public void update () {
