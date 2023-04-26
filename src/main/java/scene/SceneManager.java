@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import ecs.GameObject;
+
 /**
  * The SceneManager to handle all scenes of an Engine instance.
  * It contains a scene pool and a currently active scene.
@@ -79,6 +81,7 @@ public class SceneManager {
             if (!addScene(scene)) return false;
             newScene = true;
         }
+
         return switchScene(scene, newScene);
     }
 
@@ -173,6 +176,14 @@ public class SceneManager {
         currentScene = newCurrent;
         currentScene.activate();
         if (newScene && enabled) awaken(currentScene);
+
+        // wait for the scene to be fully loaded, idk why this is needed but it seems to work
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Log.info("switched to new scene (id: " + newCurrent.sceneId() + ")", 1);
         return true;
     }
