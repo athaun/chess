@@ -87,7 +87,7 @@ public class GameServer {
 
         if (clients.size() < 2) {
             Log.info("SERVER - Client attempted to move, but there are not enough players.");
-            //return;
+            // return;
         }
 
         // Check if the move is valid.

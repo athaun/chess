@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 
 import event.Events;
 import graphics.Color;
+import ui.CursorManager;
 import ui.EventHandler;
 import ui.Frame;
 import ui.RenderableElement;
@@ -97,9 +98,11 @@ public class TextField extends RenderableElement implements TextHolder {
         if (isMouseOnThis()) {
             if (tintColor != null) {
                 this.setColor(tintColor);
+                CursorManager.requestCursor(GLFW.GLFW_IBEAM_CURSOR);
             }
         } else {
             this.setColor(defaultColor);
+            CursorManager.resetCursor();
         }
     }
 }

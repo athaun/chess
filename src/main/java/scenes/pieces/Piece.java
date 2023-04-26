@@ -35,6 +35,12 @@ public class Piece {
         this.color = color;
     }
 
+    public void removeGameObject () {
+        if (this.gameObject != null) {
+            Engine.scenes().currentScene().removeGameObjectFromScene(this.gameObject);
+        }
+    }
+
     /*
      * Generates the piece sprite at the right position and size.
      * Pulls the sprite from the spritesheet based on the piece type and color.
