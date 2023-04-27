@@ -27,7 +27,7 @@ public class ChessBoard extends Chess {
     static boolean whiteTurn = true;
 
     String ipText = "IP: " + GameServer.getIp();
-    String turn = "Turn: " + currentTurn; //Tile.getTurn();
+    String turn = "Turn: " + currentTurn; 
 
 
     public static boolean isServer = false;
@@ -130,7 +130,6 @@ public class ChessBoard extends Chess {
             turn = "Turn: " + "Black's turn";
             currentTurn.setColor(PRIMARY_DARK);
         }
-
         currentTurn.change(turn);
     }
 

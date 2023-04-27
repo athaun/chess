@@ -21,6 +21,7 @@ import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
 import scenes.Chess;
 import scenes.ChessBoard;
+import scenes.win;
 import scenes.pieces.NetData;
 import scenes.pieces.Piece;
 import util.Engine;
@@ -38,6 +39,7 @@ public class GameServer {
     private static int gameID = 0;
     
     boolean whiteTurn = true;
+    boolean someoneWon = false;
     /*
      * Starts the server.
      */
@@ -101,6 +103,18 @@ public class GameServer {
             else {
                 Log.p("Jumping on self.");
                 return;
+            }
+
+            //Find out who won. 
+            if ((piece.getCharFromType()) =='K' && !whiteTurn && !someoneWon){
+                Log.p("Black wins!");
+                someoneWon = true;
+                //Engine.scenes().switchScene(new win());
+            }
+            else if ((piece.getCharFromType()) == 'k' && whiteTurn && !someoneWon){
+                Log.p("White wins!");
+                someoneWon = true;
+                //Engine.scenes().switchScene(new win());
             }
         }
         if (Character.isUpperCase(move.type) == whiteTurn){
