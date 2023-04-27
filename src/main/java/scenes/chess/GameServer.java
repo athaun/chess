@@ -138,8 +138,8 @@ public class GameServer {
 
         if (clients.size() >= 2) {
             Log.info("SERVER - Client " + request.name + " attempted to join, but the server is full.");
-            // return;
-            Log.warn("IF YOU SEE THIS, IT MEANS THE SERVER IS FULL BUT YOU ARE STILL ABLE TO JOIN. THIS IS TEMPORARY AND WILL BE CHANGED IN THE FUTURE.");
+            return;
+            
         }
 
         // Send the client the initial setup of the board.
