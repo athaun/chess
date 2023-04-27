@@ -23,11 +23,13 @@ public class ChessBoard extends Chess {
     Tile futureSelectedTile = null;
 
     Text info;
-    Text currentTurn;
+    public Text currentTurn;
+
     static boolean whiteTurn = true;
+    static boolean whiteWon = false;
 
     String ipText = "IP: " + GameServer.getIp();
-    String turn = "Turn: " + currentTurn; 
+    public String turn = "Turn: " + currentTurn; 
 
 
     public static boolean isServer = false;
@@ -122,13 +124,15 @@ public class ChessBoard extends Chess {
             }
 
         }
-        if (whiteTurn){
-            turn = "Turn: " + "White's turn";
-            currentTurn.setColor(PRIMARY_LIGHT);
-        }
-        else{
-            turn = "Turn: " + "Black's turn";
-            currentTurn.setColor(PRIMARY_DARK);
+        if(!turn.contains("won")){
+            if (whiteTurn){
+                turn = "Turn: " + "White's turn";
+                currentTurn.setColor(PRIMARY_LIGHT);
+            }
+            else{
+                turn = "Turn: " + "Black's turn";
+                currentTurn.setColor(PRIMARY_DARK);
+            }
         }
         currentTurn.change(turn);
     }

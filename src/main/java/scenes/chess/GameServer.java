@@ -17,11 +17,11 @@ import network.requests.JoinRequest;
 import network.requests.KryoRequest;
 import network.requests.MoveData;
 import network.requests.Probe;
+import network.requests.Winner;
 import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
 import scenes.Chess;
 import scenes.ChessBoard;
-import scenes.win;
 import scenes.pieces.NetData;
 import scenes.pieces.Piece;
 import util.Engine;
@@ -39,7 +39,7 @@ public class GameServer {
     private static int gameID = 0;
     
     boolean whiteTurn = true;
-    boolean someoneWon = false;
+    public static boolean whiteWon = false;
     /*
      * Starts the server.
      */
@@ -106,15 +106,21 @@ public class GameServer {
             }
 
             //Find out who won. 
-            if ((piece.getCharFromType()) =='K' && !whiteTurn && !someoneWon){
+            if ((piece.getCharFromType()) =='K' && !whiteTurn && !whiteWon){
                 Log.p("Black wins!");
-                someoneWon = true;
-                //Engine.scenes().switchScene(new win());
+                whiteWon = false;
+                for (Connection client : clients) {
+                    Winner win = new Winner(whiteWon);
+                    client.sendTCP(win);
+                }
             }
-            else if ((piece.getCharFromType()) == 'k' && whiteTurn && !someoneWon){
+            else if ((piece.getCharFromType()) == 'k' && whiteTurn && !whiteWon){
                 Log.p("White wins!");
-                someoneWon = true;
-                //Engine.scenes().switchScene(new win());
+                whiteWon = true;
+                for (Connection client : clients) {
+                    Winner win = new Winner(whiteWon);
+                    client.sendTCP(win);
+                }
             }
         }
         if (Character.isUpperCase(move.type) == whiteTurn){
