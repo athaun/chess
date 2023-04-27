@@ -15,10 +15,12 @@ import network.KryoRegister;
 import network.requests.JoinRequest;
 import network.requests.MoveData;
 import network.requests.Probe;
+import network.requests.Winner;
 import network.responses.ProbeResponse;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
 import scenes.pieces.Tile;
+import util.Engine;
 import util.Log;
 
 public class GameClient {
@@ -104,9 +106,19 @@ public class GameClient {
                             newBoard[x][y] = new Tile(x, y, data.board[x][y]);
                         }
                     }
-
-                    Log.p("WE MADE IT HERE!");
                     ChessBoard.board = newBoard;                    
+                }
+                if (req instanceof Winner){
+                    Winner win = (Winner) req;
+                    Log.p("Won: " + win.whiteWon);
+                    if(win.whiteWon){
+                        //((ChessBoard)Engine.scenes().currentScene()).currentTurn.change("White won!");
+                        ((ChessBoard)Engine.scenes().currentScene()).turn = "White won!";
+                    }
+                    else{
+                        ((ChessBoard)Engine.scenes().currentScene()).turn = "Black won!";
+                        //((ChessBoard)Engine.scenes().currentScene()).currentTurn.change("Black won!");
+                    }
                 }
             }
         });

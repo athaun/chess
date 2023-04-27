@@ -17,6 +17,7 @@ import network.requests.JoinRequest;
 import network.requests.KryoRequest;
 import network.requests.MoveData;
 import network.requests.Probe;
+import network.requests.Winner;
 import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
 import scenes.Chess;
@@ -38,6 +39,7 @@ public class GameServer {
     private static int gameID = 0;
     
     boolean whiteTurn = true;
+    public static boolean whiteWon = false;
     /*
      * Starts the server.
      */
@@ -101,6 +103,24 @@ public class GameServer {
             else {
                 Log.p("Jumping on self.");
                 return;
+            }
+
+            //Find out who won. 
+            if ((piece.getCharFromType()) =='K' && !whiteTurn && !whiteWon){
+                Log.p("Black wins!");
+                whiteWon = false;
+                for (Connection client : clients) {
+                    Winner win = new Winner(whiteWon);
+                    client.sendTCP(win);
+                }
+            }
+            else if ((piece.getCharFromType()) == 'k' && whiteTurn && !whiteWon){
+                Log.p("White wins!");
+                whiteWon = true;
+                for (Connection client : clients) {
+                    Winner win = new Winner(whiteWon);
+                    client.sendTCP(win);
+                }
             }
         }
         if (Character.isUpperCase(move.type) == whiteTurn){
