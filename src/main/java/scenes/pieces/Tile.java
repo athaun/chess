@@ -9,8 +9,6 @@ import graphics.Window;
 import input.Mouse;
 import scenes.pieces.Piece.PieceColor;
 import scenes.pieces.Piece.PieceType;
-import ui.element.Button;
-import util.Log;
 
 public class Tile {
 
@@ -79,24 +77,6 @@ public class Tile {
             this.piece.calculateSprite(x, y, size);
         }
     }
-
-    // Make a new empty tile
-    // public Tile (int x, int y) {
-    //     this.x = x;
-    //     this.y = y;
-    //     this.size = Window.getHeight() / 9;
-
-    //     this.renderX = x * size;
-    //     this.renderY = y * size + size;
-
-    //     this.light = (x + y) % 2 == 0;
-
-    //     // Log.debug("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
-
-    //     this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
-    //     spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
-    //     this.gameObject.addComponent(spriteRenderer);
-    // }
 
     public String getTurn(){
         return nextTurn;

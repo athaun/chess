@@ -9,7 +9,6 @@ import ui.Text;
 import ui.fonts.Font;
 import static graphics.Graphics.setDefaultBackground;
 import org.lwjgl.glfw.GLFW;
-
 import util.Log;
 
 public class ChessBoard extends Chess {
@@ -113,13 +112,9 @@ public class ChessBoard extends Chess {
                     // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
                     currentSelectedTile = board[y][x];
                     // Log.p("Board " + x + ", " + y + " has been selected to move!");
-                }
-
-                board[y][x].setIsPieceClicked(false);     
-                
-                
+                    board[y][x].setIsPieceClicked(false);     
+                }              
             }
-
         }
         if (whiteTurn){
             turn = "White's turn";
