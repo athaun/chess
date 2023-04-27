@@ -9,6 +9,7 @@ import network.requests.KryoRequest;
 import network.requests.Message;
 import network.requests.MoveData;
 import network.requests.Probe;
+import network.requests.Winner;
 import network.responses.InitialSetup;
 import network.responses.KryoResponse;
 import network.responses.ProbeResponse;
@@ -34,6 +35,7 @@ public class KryoRegister {
         kryo.register(char[].class);
 
         kryo.register(MoveData.class);
+        kryo.register(Winner.class);
         
     }
 
