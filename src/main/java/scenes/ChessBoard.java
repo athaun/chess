@@ -1,18 +1,15 @@
 package scenes;
 
 import graphics.Camera;
-import graphics.Window;
 import input.Keyboard;
 import scenes.chess.GameServer;
 import scenes.pieces.Piece;
 import scenes.pieces.Tile;
-import scenes.pieces.Piece.PieceColor;
 import ui.Text;
 import ui.fonts.Font;
 import static graphics.Graphics.setDefaultBackground;
 import org.lwjgl.glfw.GLFW;
 
-import util.Engine;
 import util.Log;
 
 public class ChessBoard extends Chess {
@@ -26,12 +23,20 @@ public class ChessBoard extends Chess {
     Tile futureSelectedTile = null;
 
     Text info;
-    Text turn;
+    public Text currentTurn;
+
+    static boolean whiteTurn = true;
+    static boolean whiteWon = false;
 
     String ipText = "IP: " + GameServer.getIp();
+    public String turn = "Turn: " + currentTurn; 
+
 
     public static boolean isServer = false;
     
+    /*
+     * Called when the scene is first loaded.
+     */
     public void awake() {
         camera = new Camera();
         setDefaultBackground(100, 100, 100);
@@ -41,6 +46,7 @@ public class ChessBoard extends Chess {
         Piece.loadSprites("src/assets/images/pack.png");
 
         info = new Text(ipText, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 10, 10);
+        currentTurn = new Text(turn, new Font("src/assets/fonts/AnimeAce.ttf", 20, true), PRIMARY_LIGHT, 545, 10);
 
         isServer = server != null;
 
@@ -59,48 +65,47 @@ public class ChessBoard extends Chess {
         }
     }
 
+    /*
+     * Called by the server to create the board data which is sent to the client on join.
+     */
     public char[][] createBoardData () {
         return Tile.getStartingLayout();
     }
 
     private void serverUpdate () {
-
         //board is displayed with y rows first then x columns
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                board[y][x].update();
+                // board[y][x].update();
 
-                if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
-                    // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
-                    Log.p("Board " + x + ", " + y + " has been moved to new location!");
-                    futureSelectedTile = board[y][x];
+                // if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
+                //     // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
+                //     Log.p("Board " + x + ", " + y + " has been moved to new location!");
+                //     futureSelectedTile = board[y][x];
 
-                    // Move the piece to the new tile
-                    futureSelectedTile.setPiece(currentSelectedTile.getPiece());
-                    currentSelectedTile.setPiece(null);
+                //     // Move the piece to the new tile
+                //     futureSelectedTile.setPiece(currentSelectedTile.getPiece());
+                //     currentSelectedTile.setPiece(null);
 
-                    // Reset the currently selected tile and the future selected tile
-                    currentSelectedTile.setIsPieceClicked(false);
-                    futureSelectedTile.setIsPieceClicked(false);
+                //     // Reset the currently selected tile and the future selected tile
+                //     currentSelectedTile.setIsPieceClicked(false);
+                //     futureSelectedTile.setIsPieceClicked(false);
 
-                    // Reset the currently selected tile and the future selected tile
-                    currentSelectedTile = null;
-                    futureSelectedTile = null;
-                }
+                //     // Reset the currently selected tile and the future selected tile
+                //     currentSelectedTile = null;
+                //     futureSelectedTile = null;
+                // }
                 
-                if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
-                    // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
-                    currentSelectedTile = board[y][x];
-                    Log.p("Board " + x + ", " + y + " has been selected to move!");
-                }
+                // if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
+                //     // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
+                //     currentSelectedTile = board[y][x];
+                //     Log.p("Board " + x + ", " + y + " has been selected to move!");
+                // }
 
-                board[y][x].setIsPieceClicked(false);                
+                // board[y][x].setIsPieceClicked(false);                
             }
         }
-    }
-
-    private void clientUpdate () {
-
+        currentTurn.change(turn);
     }
 /*private boolean isPlayer1Turn = true;
     private void Player2Move() {}
@@ -129,8 +134,7 @@ public class ChessBoard extends Chess {
             Log.p("Client shutting down!");
             System.exit(0);
         }
-
-        if (isServer) serverUpdate();
-        else clientUpdate();        
+        
+        clientUpdate();        
     }
 }

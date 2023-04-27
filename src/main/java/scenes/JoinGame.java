@@ -62,7 +62,9 @@ class joinGame extends Chess {
 
         // Text field. Then display the IP on the chess game window.
         ipField = new TextField("127.0.0.1", new Frame(250, 75, 200, 70));
+        ipField.tintColor = SECONDARY_DARK.toNormalizedVec4f();
         joinButton = new Button("JOIN", PRIMARY_DARK, PRIMARY_LIGHT, new Frame(455, 75, 95, 70));
+        joinButton.tintColor = SECONDARY_DARK.toNormalizedVec4f();
         joinButton.getEventHandler().registerListener(Event.MOUSE_CLICK, (e) -> {
             try {
                 Engine.scenes().switchScene(new ChessBoard().defer(() -> {
@@ -117,15 +119,17 @@ class joinGame extends Chess {
             // map each host in the list to a button in the buttons list.
             int hostIndex = 0;
             for (GameHost h : client.getGameHosts()) {
-                String label = h.gameID + " at " + h.address.getHostName();
+                String label = h.hostName + " at " + h.address.getHostName();
 
                 if (hostIndex >= hosts.size()) {
-                    // Add a new button to the list.
-                    hosts.add(new Button(label, PRIMARY_DARK, PRIMARY_LIGHT, new Frame(250, 175 + (hostIndex * 75), 300, 70)));
+                    Button newButton = new Button(label, PRIMARY_DARK, PRIMARY_LIGHT, new Frame(250, 175 + (hostIndex * 75), 300, 70));
+                    newButton.tintColor = SECONDARY_DARK.toNormalizedVec4f();
+                    hosts.add(newButton);
+
                     
                     // Register a listener for the button that will attempt to join the game.
                     hosts.get(hostIndex).getEventHandler().registerListener(Event.MOUSE_CLICK, e -> {
-                        Log.debug("CLIENT - Attempting to join " + h.gameID + " at " + h.address.getHostAddress());
+                        Log.debug("CLIENT - Attempting to join " + h.hostName + " at " + h.address.getHostAddress());
 
                         try {
                             Engine.scenes().switchScene(new ChessBoard().defer(() -> {
@@ -146,10 +150,11 @@ class joinGame extends Chess {
                             Engine.scenes().switchScene(new joinGame());
                         }
                     });
-                }                
+                }             
+
                 // This does not clean up old hosts that are no longer available due to a bug with the rendering system that doesn't allow too many Buttons in the same render context
                 // and because of the event system which currently does not have a cleanup/remove method
-                // TODO @Asher: Fix this if time is available, for now the basic functionality is here, but if a host disapears and someone tries to join, it will cause a crash.                 
+                // TODO: Fix this if time is available, for now the basic functionality is here, but if a host disapears and someone tries to join, it will cause a crash.                 
 
                 hostIndex++;
             }

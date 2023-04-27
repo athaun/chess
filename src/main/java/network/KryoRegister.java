@@ -1,24 +1,19 @@
 package network;
 
-import org.joml.Vector4f;
-
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 
-import ecs.GameObject;
-import ecs.SpriteRenderer;
-import graphics.Color;
 import network.requests.JoinRequest;
 import network.requests.KryoRequest;
 import network.requests.Message;
+import network.requests.MoveData;
 import network.requests.Probe;
+import network.requests.Winner;
 import network.responses.InitialSetup;
 import network.responses.KryoResponse;
 import network.responses.ProbeResponse;
 import scenes.pieces.NetData;
-import scenes.pieces.Tile;
-import util.OrderPreservingList;
 
 public class KryoRegister {
     private static void registerWithKryo (Kryo kryo) {
@@ -38,6 +33,9 @@ public class KryoRegister {
         kryo.register(NetData.class);
         kryo.register(char[][].class);
         kryo.register(char[].class);
+
+        kryo.register(MoveData.class);
+        kryo.register(Winner.class);
         
     }
 

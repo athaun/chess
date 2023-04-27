@@ -35,8 +35,8 @@ public class Piece {
         this.color = color;
     }
 
-    public void calculateSprite(int x, int y, int tileSize) {
-        float scalar = (float) (graphics.Window.getWidth() / (tileSize * 1.9));
+    public void calculateSprite (int x, int y, int tileSize) {
+        float scalar = (float)(graphics.Window.getWidth() / (tileSize * 1.9));
 
         if (this.gameObject != null) {
             Engine.scenes().currentScene().removeGameObjectFromScene(this.gameObject);
@@ -125,6 +125,9 @@ public class Piece {
         }
     }
 
+    /*
+     * Returns a piece from a char that represents the type and color of the piece to be sent over the network in the NetData class
+     */
     public static Piece getPieceFromChar (char c, int x, int y) {
         // Return a char that represents the type and color
         switch (c) {

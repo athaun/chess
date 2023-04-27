@@ -10,6 +10,7 @@ import input.Mouse;
 import scenes.pieces.Piece.PieceColor;
 import scenes.pieces.Piece.PieceType;
 import ui.element.Button;
+import util.Log;
 
 public class Tile {
 
@@ -45,9 +46,9 @@ public class Tile {
     private int renderX, renderY;
     private int size;
     private Piece piece;
-    private boolean isPieceClicked;
 
     private boolean light = false;
+    private boolean isPieceClicked = false;
 
     private Color black = new Color(193, 114, 86);
     private Color blackHovered = new Color(170, 104, 76);
@@ -56,26 +57,6 @@ public class Tile {
 
     private GameObject gameObject;
     private SpriteRenderer spriteRenderer;
-
-    public Tile(int x, int y, int size, PieceColor color) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-
-        this.renderX = x * size;
-        this.renderY = y * size + size;
-
-        this.light = color == PieceColor.WHITE;
-
-        this.gameObject = new GameObject(color.toString().toLowerCase() + " tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
-        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
-        this.gameObject.addComponent(spriteRenderer);
-
-        if (startingLayout[y][x] != null) {
-            this.piece = startingLayout[y][x];
-            this.piece.calculateSprite(x, y, size);
-        }
-    }
 
     public Tile (int x, int y, char piece) {
         this.x = x;
@@ -86,6 +67,8 @@ public class Tile {
         this.renderY = y * size + size;
 
         this.light = (x + y) % 2 == 0;
+
+        // Log.p("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
 
         this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
         spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
@@ -98,19 +81,25 @@ public class Tile {
     }
 
     // Make a new empty tile
-    public Tile (int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.size = Window.getHeight() / 9;
+    // public Tile (int x, int y) {
+    //     this.x = x;
+    //     this.y = y;
+    //     this.size = Window.getHeight() / 9;
 
-        this.renderX = x * size;
-        this.renderY = y * size + size;
+    //     this.renderX = x * size;
+    //     this.renderY = y * size + size;
 
-        this.light = (x + y) % 2 == 0;
+    //     this.light = (x + y) % 2 == 0;
 
-        this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
-        spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
-        this.gameObject.addComponent(spriteRenderer);
+    //     // Log.debug("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
+
+    //     this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
+    //     spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
+    //     this.gameObject.addComponent(spriteRenderer);
+    // }
+
+    public String getTurn(){
+        return nextTurn;
     }
 
     public int getX() {
@@ -134,6 +123,14 @@ public class Tile {
 
     public boolean isOccupied() {
         return piece != null;
+    }
+
+    public boolean isPieceClicked(){
+        return isPieceClicked;
+    }
+
+    public void setIsPieceClicked(boolean isPieceClicked){
+        this.isPieceClicked = isPieceClicked;
     }
 
     public boolean isOccupiedBy(PieceColor color) {
