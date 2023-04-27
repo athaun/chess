@@ -24,7 +24,7 @@ public class ChessBoard extends Chess {
 
     Text info;
     Text nextTurn;
-    static boolean whiteTurn = true;
+    public static boolean whiteTurn = true;
 
     String ipText = "IP: " + GameServer.getIp();
     String turn = "Turn: "; //Tile.getTurn();
@@ -95,7 +95,8 @@ public class ChessBoard extends Chess {
                 if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
                     // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
                     futureSelectedTile = board[y][x];
-                    currentSelectedTile.setPieceSelected(false);;
+                    currentSelectedTile.setPieceSelected(false);
+                    futureSelectedTile.setPieceSelected(false);
 
                     // Request the server to update the board
                     client.sendMove(currentSelectedTile, futureSelectedTile);

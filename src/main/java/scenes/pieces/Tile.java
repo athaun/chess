@@ -7,6 +7,7 @@ import ecs.SpriteRenderer;
 import graphics.Color;
 import graphics.Window;
 import input.Mouse;
+import scenes.ChessBoard;
 import scenes.pieces.Piece.PieceColor;
 import scenes.pieces.Piece.PieceType;
 
@@ -147,7 +148,9 @@ public class Tile {
 
             if (Mouse.mouseButtonDown(0) && !pMouseDown) {
                 if(isOccupied()) {
-                    isPieceSelected = true;
+                    if((ChessBoard.whiteTurn && piece.getColor() == PieceColor.WHITE) || (!ChessBoard.whiteTurn && piece.getColor() == PieceColor.BLACK)) {
+                        isPieceSelected = true;
+                    }
                 }
                 // Left mouse button is pressed
                 isPieceClicked = true;
@@ -161,7 +164,6 @@ public class Tile {
         else {
             // leave highlighted if piece is selected
             if(isPieceSelected) {
-                System.out.println("Piece is selected");
                 if (light) {
                     spriteRenderer.setColor(whiteSelected);
                 } else {
@@ -170,7 +172,6 @@ public class Tile {
             }
             // if piece is not selected or moused over then go back to normal
             else {
-                System.out.println("Piece is not selected");
                 if (light) {
                     spriteRenderer.setColor(white);
                 } else {

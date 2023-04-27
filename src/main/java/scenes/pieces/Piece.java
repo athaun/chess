@@ -10,11 +10,11 @@ import graphics.Texture;
 import util.Engine;
 
 public class Piece {
-    public enum PieceType {
+    public static enum PieceType {
         PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
     }
 
-    public enum PieceColor {
+    public static enum PieceColor {
         WHITE, BLACK
     }
 
