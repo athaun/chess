@@ -9,8 +9,6 @@ import graphics.Window;
 import input.Mouse;
 import scenes.pieces.Piece.PieceColor;
 import scenes.pieces.Piece.PieceType;
-import ui.element.Button;
-import util.Log;
 
 public class Tile {
 
@@ -49,11 +47,14 @@ public class Tile {
 
     private boolean light = false;
     private boolean isPieceClicked = false;
+    private boolean isPieceSelected = false;
 
     private Color black = new Color(193, 114, 86);
     private Color blackHovered = new Color(170, 104, 76);
+    private Color blackSelected = new Color(150, 74, 46);
     private Color white = new Color(251, 223, 188);
     private Color whiteHovered = new Color(230, 210, 170);
+    private Color whiteSelected = new Color(200, 180, 140);
 
     private GameObject gameObject;
     private SpriteRenderer spriteRenderer;
@@ -68,8 +69,6 @@ public class Tile {
 
         this.light = (x + y) % 2 == 0;
 
-        // Log.p("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
-
         this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
         spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
         this.gameObject.addComponent(spriteRenderer);
@@ -79,24 +78,6 @@ public class Tile {
             this.piece.calculateSprite(x, y, size);
         }
     }
-
-    // Make a new empty tile
-    // public Tile (int x, int y) {
-    //     this.x = x;
-    //     this.y = y;
-    //     this.size = Window.getHeight() / 9;
-
-    //     this.renderX = x * size;
-    //     this.renderY = y * size + size;
-
-    //     this.light = (x + y) % 2 == 0;
-
-    //     // Log.debug("Creating tile at " + x + ", " + y + " with size " + size + " and render position " + renderX + ", " + renderY + "");
-
-    //     this.gameObject = new GameObject("tile " + x + ", " + y, new Vector2f(renderX, renderY), 1);
-    //     spriteRenderer = new SpriteRenderer(this.light ? white : black, new Vector2f(size));
-    //     this.gameObject.addComponent(spriteRenderer);
-    // }
 
     public String getTurn(){
         return nextTurn;
@@ -133,6 +114,14 @@ public class Tile {
         this.isPieceClicked = isPieceClicked;
     }
 
+    public boolean isPieceSelected() {
+        return isPieceSelected;
+    }
+
+    public void setPieceSelected(boolean isPieceSelected) {
+        this.isPieceSelected = isPieceSelected;
+    }
+
     public boolean isOccupiedBy(PieceColor color) {
         return isOccupied() && piece.getColor() == color;
     }
@@ -157,6 +146,9 @@ public class Tile {
             }
 
             if (Mouse.mouseButtonDown(0) && !pMouseDown) {
+                if(isOccupied()) {
+                    isPieceSelected = true;
+                }
                 // Left mouse button is pressed
                 isPieceClicked = true;
                 pMouseDown = true;
@@ -164,12 +156,26 @@ public class Tile {
             } else if (!Mouse.mouseButtonDown(0) && pMouseDown) {
                 // Left mouse button is released
                 pMouseDown = false;
+            }   
+        } 
+        else {
+            // leave highlighted if piece is selected
+            if(isPieceSelected) {
+                System.out.println("Piece is selected");
+                if (light) {
+                    spriteRenderer.setColor(whiteSelected);
+                } else {
+                    spriteRenderer.setColor(blackSelected);
+                }
             }
-        } else {
-            if (light) {
-                spriteRenderer.setColor(white);
-            } else {
-                spriteRenderer.setColor(black);
+            // if piece is not selected or moused over then go back to normal
+            else {
+                System.out.println("Piece is not selected");
+                if (light) {
+                    spriteRenderer.setColor(white);
+                } else {
+                    spriteRenderer.setColor(black);
+                }
             }
         }
         return false;

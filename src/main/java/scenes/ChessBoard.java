@@ -94,8 +94,8 @@ public class ChessBoard extends Chess {
 
                 if(board[y][x].isPieceClicked() && currentSelectedTile != null) {
                     // If the currently selected tile is not null, then move the piece to the new tile because the user already clicked a tile before
-                    // Log.p("Board " + x + ", " + y + " has been moved to new location!");
                     futureSelectedTile = board[y][x];
+                    currentSelectedTile.setPieceSelected(false);;
 
                     // Request the server to update the board
                     client.sendMove(currentSelectedTile, futureSelectedTile);
@@ -112,12 +112,9 @@ public class ChessBoard extends Chess {
                 if(board[y][x].isPieceClicked() && currentSelectedTile == null && board[y][x].isOccupied()) {
                     // If the currently selected tile is null, then set the currently selected tile to the tile that was clicked
                     currentSelectedTile = board[y][x];
-                    // Log.p("Board " + x + ", " + y + " has been selected to move!");
                 }
 
-                board[y][x].setIsPieceClicked(false);     
-                
-                
+                board[y][x].setIsPieceClicked(false);                
             }
 
         }
