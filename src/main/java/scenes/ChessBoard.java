@@ -125,11 +125,11 @@ public class ChessBoard extends Chess {
         }
         if(!turn.contains("won")){
             if (whiteTurn){
-                turn = "Turn: " + "White's turn";
+                turn = "Turn: " + "White's turn"; // if its whites Turn 
                 currentTurn.setColor(PRIMARY_LIGHT);
             }
             else{
-                turn = "Turn: " + "Black's turn";
+                turn = "Turn: " + "Black's turn"; // if its black turn
                 currentTurn.setColor(PRIMARY_DARK);
             }
         }
