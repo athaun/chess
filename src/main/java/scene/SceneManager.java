@@ -8,8 +8,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import ecs.GameObject;
-
 /**
  * The SceneManager to handle all scenes of an Engine instance.
  * It contains a scene pool and a currently active scene.

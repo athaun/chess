@@ -112,13 +112,12 @@ public class GameClient {
                     Winner win = (Winner) req;
                     Log.p("Won: " + win.whiteWon);
                     if(win.whiteWon){
-                        //((ChessBoard)Engine.scenes().currentScene()).currentTurn.change("White won!");
                         ((ChessBoard)Engine.scenes().currentScene()).turn = "White won!";
                     }
                     else{
                         ((ChessBoard)Engine.scenes().currentScene()).turn = "Black won!";
-                        //((ChessBoard)Engine.scenes().currentScene()).currentTurn.change("Black won!");
                     }
+                    ChessBoard.someoneWon = true;
                 }
             }
         });

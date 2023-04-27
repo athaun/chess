@@ -1,8 +1,6 @@
 package scenes.chess;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,17 +16,13 @@ import network.requests.KryoRequest;
 import network.requests.MoveData;
 import network.requests.Probe;
 import network.requests.Winner;
-import network.responses.InitialSetup;
 import network.responses.ProbeResponse;
 import scenes.Chess;
 import scenes.ChessBoard;
 import scenes.pieces.NetData;
 import scenes.pieces.Piece;
-import util.Engine;
 import util.Log;
 import util.MathUtils;
-
-import static scenes.ChessBoard.*;
 
 public class GameServer {
 
