@@ -1,7 +1,7 @@
 ## Chess
 
 ### Credits
-Created by Asher Haun, Silvia Flores, Ellie Walser, and Younus Syed for CSCI 3326 (OOP in Java).
+Created by Asher Haun, Silvia Flores and Ellie Walser for CSCI 3326 (OOP in Java).
 
 Most of the files are for the azurite engine which is our graphics framework.
 The files for chess are in `src/main/java/network`
